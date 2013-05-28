@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.widget.ArrayAdapter;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.widget.*;
 import android.view.*;
@@ -26,12 +27,16 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
  
 		View rowView = inflater.inflate(R.layout.list_item, parent, false);
 		TextView labelView = (TextView) rowView.findViewById(R.id.appLabel);
+		TextView detailView = (TextView)rowView.findViewById(R.id.appDetails);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.appLogo);
 		TextView riskTextView = (TextView) rowView.findViewById(R.id.riskTextView);
 		
-		labelView.setText(objects.get(position).getDisplayName());
+		Typeface appFont = Typeface.createFromAsset(context.getAssets(), "MyriadPro-Light.otf");
+		labelView.setTypeface(appFont);
+		detailView.setTypeface(appFont);
+		riskTextView.setTypeface(appFont);
 		
-		TextView detailView = (TextView)rowView.findViewById(R.id.appDetails);
+		labelView.setText(objects.get(position).getDisplayName());		
 		detailView.setText(objects.get(position).getVirusName() + "\n" + objects.get(position).getSummary());
 		
 //		labelView.setWidth(400);

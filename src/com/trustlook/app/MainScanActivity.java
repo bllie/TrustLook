@@ -79,8 +79,7 @@ public class MainScanActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_scan);
 		
-		ActionBar bar = getActionBar();
-		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
 				
 		service = AppListService.getInstance();
 		service.setInterestMap(PkgUtils.loadInterestMap(this));

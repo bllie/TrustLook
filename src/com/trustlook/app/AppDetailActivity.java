@@ -71,7 +71,6 @@ public class AppDetailActivity extends Activity {
 			}
 		});
 		reportWebView = (WebView)findViewById(R.id.detailWebView);
-		// progressBar = (ProgressBar)findViewById(R.id.reportWebProgressBar);
 		reportWebView.setWebViewClient(new SimpleReportWebClient());
 		reportWebView.getSettings().setJavaScriptEnabled(true);
 		reportWebView.loadUrl(currentApp.getReportUrl());
