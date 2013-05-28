@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">trustlook</string>
+    <string name="action_settings">Settings</string>
+    <string name="scan_device">Scan the device: </string>
+    <string name="list_subject">Total apps: </string>
+    <string name="scanButton_title">Scan!</string>
+    <string name="trustButton_title">Upload</string>
+    <string name="uninstallButton_title">Uninstall</string>
+    <string name="app_logo">App Logo</string>
+    <string name="scan_image">Scan</string>
+    <string name="scan_results">Scan Results</string>
+    <string name="not_available">N/A</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor</string>
+    <string name="includeSystem">false</string>
+    <string name="EULA">IMPORTANT – READ CAREFULLY. YOUR USE OF THE APP DOWNLOADABLE TO YOUR APP-ENABLED MOBILE DEVICE (THE “BLURB MOBILE APP”) IS CONDITIONED UPON YOUR COMPLIANCE WITH, AND ACCEPTANCE OF, THE FOLLOWING AGREEMENT. YOU ACKNOWLEDGE AND AGREE THAT BY CLICKING ON THE ACCEPT BUTTON OR SIMILAR BUTTONS OR LINKS AS MAY BE DESIGNATED BY BLURB TO SHOW THESE TERMS AND/OR TO INSTALL THE BLURB MOBILE APP, YOU ARE ENTERING INTO A LEGALLY BINDING CONTRACT. YOU WILL NOT BE PERMITTED TO USE THE BLURB MOBILE APP AND THE ASSOCIATED BLURB SERVICES UNLESS AND UNTIL YOU ACCEPT THIS AGREEMENT AND ANY OTHER RULES OR POLICIES THAT BLURB MAY CREATE AND MAKE AVAILABLE ON ITS WEBSITE FROM TIME TO TIME.</string>
+</resources>

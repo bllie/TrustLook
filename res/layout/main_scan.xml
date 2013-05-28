@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:paddingTop="10dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="#EBF3F6"
+ >
+
+    <RelativeLayout 
+        android:id="@+id/progressComboLayout"
+        android:visibility="gone"
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_marginLeft="10dp" 
+        android:layout_marginRight="10dp" 
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal">
+        
+        <ProgressBar 
+            android:id="@+id/scanBar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="false"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:progressDrawable="@drawable/circular_progress"/>    
+    
+        <TextView  
+             android:id="@+id/tv_progress_circle"  
+             android:layout_width="wrap_content"  
+             android:layout_height="wrap_content"  
+             android:layout_centerInParent="true"  
+             android:background="@android:color/transparent"  
+             android:gravity="center"  
+             android:textColor="#00BFFF"
+             android:textSize="38sp" />                 
+    </RelativeLayout>
+
+         
+    <!--  flashing when scanning -->    
+    <TextView 
+        android:id="@+id/resultText"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:maxLines="3" 
+        android:textSize="16sp"
+        android:textIsSelectable="false"/>
+    
+    <ImageView
+        android:id="@+id/scan_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/amplifier"
+        android:contentDescription="@string/scan_image" >
+    </ImageView>
+    
+    <!--  scan button -->
+    <Button 
+        android:id="@+id/scanButton"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/scanButton_title"
+        android:textSize="40sp"
+        android:background="@drawable/scan_button"
+        android:textColor="#FFFFFF"
+        android:onClick="scan"/>   
+</LinearLayout>

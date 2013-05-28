@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <!--  app logo -->
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/windowsmobile_logo"
+        android:contentDescription="@string/app_logo" >
+    </ImageView>
+ 
+    <!--  middle -->
+    <LinearLayout 
+        android:id="@+id/midLayout"
+        android:layout_toRightOf="@id/appLogo"
+        android:orientation="vertical"   
+        android:layout_width="wrap_content"  
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/appLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@+id/label"
+            android:textSize="16sp"
+            android:ellipsize="middle" >
+        </TextView>
+        <TextView
+            android:id="@+id/appDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp" 
+            android:maxLines="2" 
+            android:lines="2"
+            android:typeface="sans"
+            android:text="@string/sample_text"
+            android:ellipsize="middle" >
+        </TextView>            
+    </LinearLayout>
+    
+    <!-- score -->
+    <TextView
+        android:id="@+id/riskTextView"
+        android:layout_alignParentRight="true"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:paddingLeft="2sp"
+        android:textSize="20sp" 
+        android:textStyle="bold"
+        android:maxLines="1" 
+        android:lines="1"
+        android:typeface="sans"
+        android:text="@string/not_available">
+    </TextView>                    
+  
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+  
+    <!--  top banner -->
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="42sp">
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/windowsmobile_logo"
+            android:contentDescription="@string/app_logo" >
+        </ImageView>
+        <TextView
+	        android:id="@+id/appNameLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40sp"
+	        android:layout_toRightOf="@id/appLogo"
+	        android:layout_centerVertical="true"
+	        android:layout_marginBottom="5sp"
+	        android:fontFamily="sans"
+	        android:textSize="16sp"
+	        android:textStyle="bold"
+	        android:text="@string/list_subject" />
+    </RelativeLayout>
+    <!--  middle webview -->
+    <WebView 
+        android:id="@+id/detailWebView"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"/>
+    
+    <!-- bottom button bar -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:orientation="horizontal"
+        android:layout_marginTop="4sp"
+        android:layout_marginBottom="4sp"   >
+	    <Button 
+	        android:id="@+id/trustButton"
+	        android:layout_height="60dp"
+	        android:layout_width="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/trustButton_title" />       
+	    <Button 
+	        android:id="@+id/uninstallButton"
+	        android:layout_height="60dp"
+	        android:layout_width="match_parent"
+	        android:layout_weight="1"
+	        android:text="@string/uninstallButton_title" />                       
+    </LinearLayout>
+</LinearLayout>
