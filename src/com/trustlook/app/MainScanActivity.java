@@ -16,6 +16,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,12 +33,15 @@ import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,6 +63,7 @@ public class MainScanActivity extends Activity {
 	private ImageView amplifierImageView;
 	private ProgressBar mProgressBar;
 	private Button scanButton;
+	private TextView scanLabel;
 	private TextView resultText;
 	private TextView percentTextView;
 	private RelativeLayout progressComboLayout;
@@ -87,12 +92,14 @@ public class MainScanActivity extends Activity {
 		appFont = Typeface.createFromAsset(getAssets(), "MyriadPro-Light.otf");
 		
 		// UI widgets
+		scanLabel = (TextView)findViewById(R.id.scanLabel);
 		resultText = (TextView)findViewById(R.id.resultText);
 		percentTextView = (TextView)findViewById(R.id.tv_progress_circle);
 		amplifierImageView = (ImageView)findViewById(R.id.scan_image);
 		mProgressBar = (ProgressBar) findViewById(R.id.scanBar);
 		progressComboLayout = (RelativeLayout)findViewById(R.id.progressComboLayout);
 		
+		scanLabel.setTypeface(appFont);
 		resultText.setTypeface(appFont);
 		percentTextView.setTypeface(appFont);
 		
@@ -123,7 +130,7 @@ public class MainScanActivity extends Activity {
 				0, apkUploadIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 15*1000, pendingIntent);	
+		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Constants.CHECK_INTERVAL, pendingIntent);	
 		
 		
 		if (!isAlreadyLaunched) {
@@ -166,6 +173,7 @@ public class MainScanActivity extends Activity {
 					// visibility control
 					amplifierImageView.setVisibility(View.GONE);
 					progressComboLayout.setVisibility(View.VISIBLE);
+					scanLabel.setVisibility(View.VISIBLE);
 					resultText.setVisibility(View.VISIBLE);
 					
 					// set progressBar to initial state
@@ -184,6 +192,7 @@ public class MainScanActivity extends Activity {
 					// visibility control
 					amplifierImageView.setVisibility(View.VISIBLE);
 					progressComboLayout.setVisibility(View.GONE);
+					scanLabel.setVisibility(View.GONE);
 					resultText.setVisibility(View.GONE);
 					
 					// set progressBar to initial state
@@ -237,7 +246,7 @@ public class MainScanActivity extends Activity {
 		
 		@Override
 		protected void onProgressUpdate(String... values) {
-			resultText.setText("Scanning \n" + PkgUtils.shortName(values[0]));
+			resultText.setText("" + PkgUtils.shortName(values[0]));
 			mProgressStatus++;
 			
 			// Log.d(TAG, "mProgressStatus: " + mProgressStatus);
@@ -248,6 +257,8 @@ public class MainScanActivity extends Activity {
 		@Override
 		protected void onPostExecute(String results) {
 			mProgressBar.setProgress(100);
+			
+			scanButton.setText("Scan");
 			resultText.setText("Completed");
 			
 			Log.d(TAG, "TrustLook Results: " + results);
@@ -257,10 +268,12 @@ public class MainScanActivity extends Activity {
 			
 			// make the 'ask' request
 			new AskTask().execute();
-			resultText.setText("Done.");		
+			scanLabel.setText("Done.");
+			resultText.setText("");
 			
 			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 			startActivity(intent); 
+			finish();
 		}		
 		
 		@Override
@@ -288,6 +301,13 @@ public class MainScanActivity extends Activity {
 		}				
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 	// ======================= Option Menu =======================
 	
 	@Override
@@ -307,10 +327,22 @@ public class MainScanActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.about_drapp:
-			Toast.makeText(this, "Antivirus 1.0 - TrustLook", Toast.LENGTH_LONG)
-			.show();
-			return (true);
 
+			final Dialog aboutDialog = new Dialog(this);
+			aboutDialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+			aboutDialog.setContentView(R.layout.about);
+			aboutDialog.setTitle("About TrustLook");
+			aboutDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,R.drawable.ic_launcher);
+			appFont = Typeface.createFromAsset(getAssets(), "MyriadPro-Light.otf");
+			
+			TextView aboutMainLabel = (TextView)aboutDialog.findViewById(R.id.aboutMainLabel);
+			TextView aboutDetailLabel = (TextView)aboutDialog.findViewById(R.id.aboutDetailLabel);
+			
+			aboutMainLabel.setTypeface(appFont);
+			aboutDetailLabel.setTypeface(appFont);
+			
+			aboutDialog.show();
+			return true;
 		case R.id.help:
 			// launch detail activity
 		    Intent intent = new Intent(getApplicationContext(), EULAActivity.class);

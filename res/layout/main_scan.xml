@@ -42,16 +42,28 @@
          
     <!--  flashing when scanning -->    
     <TextView 
-        android:id="@+id/resultText"
+        android:id="@+id/scanLabel"
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
+        android:maxLines="1" 
+        android:textSize="20sp"
+        android:textIsSelectable="false"
+        android:text="Scanning"/>
+ 
+    <TextView 
+        android:id="@+id/resultText"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
         android:maxLines="3" 
         android:textSize="16sp"
         android:textIsSelectable="false"/>
-    
+        
     <ImageView
         android:id="@+id/scan_image"
         android:layout_width="match_parent"

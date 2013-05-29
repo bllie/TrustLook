@@ -17,12 +17,12 @@
         android:contentDescription="@string/app_logo" >
     </ImageView>
  
-    <!--  middle -->
+    <!--  middle android:layout_width="180dp" -->
     <LinearLayout 
         android:id="@+id/midLayout"
+        android:layout_width="wrap_content"
         android:layout_toRightOf="@id/appLogo"
         android:orientation="vertical"   
-        android:layout_width="wrap_content"  
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/appLabel"
@@ -53,7 +53,7 @@
         android:layout_width="30dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:paddingLeft="2sp"
+        android:paddingLeft="2dp"
         android:textSize="20sp" 
         android:textStyle="bold"
         android:maxLines="1" 

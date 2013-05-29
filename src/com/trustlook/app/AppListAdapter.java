@@ -7,10 +7,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.widget.*;
+import android.util.Log;
 import android.view.*;
 import com.trustlook.app.R;
 
 public class AppListAdapter extends ArrayAdapter<AppInfo> {
+	private final String TAG = "TL";
 	private final Context context;
 	private List<AppInfo> objects;
 		
@@ -39,6 +41,8 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		labelView.setText(objects.get(position).getDisplayName());		
 		detailView.setText(objects.get(position).getVirusName() + "\n" + objects.get(position).getSummary());
 		
+		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
+		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());
 //		labelView.setWidth(400);
 //		detailView.setWidth(400);
 		

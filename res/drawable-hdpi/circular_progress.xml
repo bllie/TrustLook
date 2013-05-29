@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<!-- <item android:drawable="@drawable/progress_circular_background"/>
- -->
- <item>
+<item android:drawable="@drawable/background_ring"/>
+
+<item>
     <shape
         android:innerRadiusRatio="3.4"
         android:shape="ring"
         android:thicknessRatio="6.0" >
         <gradient
-            android:endColor="#00DD00"
-            android:startColor="#000099"
+            android:endColor="#80ADD7"
+            android:startColor="#80ADD7"
             android:type="sweep"
             android:useLevel="true" />
     </shape>
 </item>
 <item>
     <rotate
-        android:drawable="@drawable/progress_particle"
+        android:drawable="@drawable/progress_particle_old"
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"
         android:toDegrees="360" />
 </item>
-
 </layer-list>

@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.flurry.android.FlurryAgent;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,13 +15,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.flurry.android.FlurryAgent;
 
 public class MainActivity extends Activity {
 
@@ -58,8 +57,8 @@ public class MainActivity extends Activity {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		
-//		int screenWidth = dm.widthPixels;		
-//		Log.d(TAG, "screenWidth: " + screenWidth);
+		int screenWidth = dm.widthPixels;		
+		Log.d(TAG, "==> screenWidth: " + screenWidth);
 
 //		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -74,7 +73,6 @@ public class MainActivity extends Activity {
 		
 		appListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
 				selectedApp = appInfoList.get(position);
 				launchAppOPDialog();
 			}
@@ -92,6 +90,19 @@ public class MainActivity extends Activity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	       if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+	    	   Intent intent = new Intent(this, MainScanActivity.class);
+	    	   startActivity(intent);
+	    	
+	    	   this.finish();
+	    	   
+	       //your stuff goes here
+	       }
+	    return super.onKeyDown(keyCode, event);
 	}
 
 	public void launchAppOPDialog() {

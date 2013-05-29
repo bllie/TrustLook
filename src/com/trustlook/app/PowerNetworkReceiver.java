@@ -59,7 +59,7 @@ public class PowerNetworkReceiver extends BroadcastReceiver {
 					0, apkUploadIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-			am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 15*1000, pendingIntent);	
+			am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Constants.CHECK_INTERVAL, pendingIntent);	
 		}
 	}
 /*

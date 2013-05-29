@@ -22,4 +22,6 @@ public class Constants {
 	// Flurry
 	public static final String EVENT_SCAN = "scan_device";
 	public static final String EVENT_APK_UPLOAD = "upload_apk";
+	
+	public static final long CHECK_INTERVAL = 120*1000; 	// in seconds
 }
