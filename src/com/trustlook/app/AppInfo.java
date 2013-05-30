@@ -138,7 +138,6 @@ public class AppInfo implements Comparable<AppInfo>{
 	public JSONObject toJSON() {
 	    JSONObject jsonObject= new JSONObject();
 	    try {
-	        // jsonObject.put("displayName", getDisplayName());
 	        jsonObject.put("packageName", getPackageName());
 	        jsonObject.put("MD5", getMd5());
 	        jsonObject.put("SHA1", getSha1());
@@ -155,6 +154,11 @@ public class AppInfo implements Comparable<AppInfo>{
 			return 1;
 		if (another == null || another.score == null)
 			return -1;
-		return (Double.parseDouble(this.score) > Double.parseDouble(another.score)) ? -1 : 1;
+		try {
+			return (Double.parseDouble(this.score) > Double.parseDouble(another.score)) ? -1 : 1;
+		}
+		catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 }

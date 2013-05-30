@@ -8,8 +8,8 @@
     <!--  app logo -->
     <ImageView
         android:id="@+id/appLogo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
@@ -30,8 +30,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@+id/label"
-            android:textSize="16sp"
-            android:ellipsize="middle" >
+            android:textSize="16sp" >
         </TextView>
         <TextView
             android:id="@+id/appDetails"
@@ -42,7 +41,7 @@
             android:lines="2"
             android:typeface="sans"
             android:text="@string/sample_text"
-            android:ellipsize="middle" >
+            android:ellipsize="end" >
         </TextView>            
     </LinearLayout>
     

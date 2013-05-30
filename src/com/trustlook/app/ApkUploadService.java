@@ -1,3 +1,8 @@
+/**
+ * Created by Tao Xie on 5/20/13.
+ * Copyright (c) 2013 trustlook. All rights reserved.
+ */
+
 package com.trustlook.app;
 
 import java.io.File;

@@ -60,14 +60,6 @@ public class MainActivity extends Activity {
 		int screenWidth = dm.widthPixels;		
 		Log.d(TAG, "==> screenWidth: " + screenWidth);
 
-//		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-//		View rowView = inflater.inflate(R.layout.list_item, this, false);
-//		TextView appNameLabel = (TextView) rowView.findViewById(R.id.appLabel);
-//		TextView appDetailsLabel = (TextView)findViewById(R.id.appDetails);
-//		appNameLabel.setWidth(screenWidth - 100 - 4);
-//		appDetailsLabel.setWidth(screenWidth - 100 - 4);
-		
 		appListView = (ListView)findViewById(R.id.listView);
 		appListView.setAdapter(new AppListAdapter(this, appInfoList));
 		

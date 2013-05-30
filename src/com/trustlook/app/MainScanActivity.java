@@ -89,7 +89,7 @@ public class MainScanActivity extends Activity {
 		service = AppListService.getInstance();
 		service.setInterestMap(PkgUtils.loadInterestMap(this));
 		
-		appFont = Typeface.createFromAsset(getAssets(), "MyriadPro-Light.otf");
+		appFont = PkgUtils.getLightFont();
 		
 		// UI widgets
 		scanLabel = (TextView)findViewById(R.id.scanLabel);
@@ -262,14 +262,13 @@ public class MainScanActivity extends Activity {
 			resultText.setText("Completed");
 			
 			Log.d(TAG, "TrustLook Results: " + results);
-			resultText.setText("Sending to TrustLook service to check ...");
+			scanLabel.setText("Checking ...");
+			resultText.setText("");
 			parseQueryResult(results);
 			
 			
 			// make the 'ask' request
 			new AskTask().execute();
-			scanLabel.setText("Done.");
-			resultText.setText("");
 			
 			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 			startActivity(intent); 
@@ -298,6 +297,9 @@ public class MainScanActivity extends Activity {
 			Log.d(TAG, "Parsing Ask Results");
 			AppListService.getInstance().setInterestMap(PkgUtils.parseAskResult(results, service));
 			PkgUtils.persistInterestMap(getApplicationContext(), AppListService.getInstance().getInterestMap());
+			
+			scanLabel.setText("Done.");
+			resultText.setText("");
 		}				
 	}
 
@@ -333,10 +335,18 @@ public class MainScanActivity extends Activity {
 			aboutDialog.setContentView(R.layout.about);
 			aboutDialog.setTitle("About TrustLook");
 			aboutDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,R.drawable.ic_launcher);
-			appFont = Typeface.createFromAsset(getAssets(), "MyriadPro-Light.otf");
+			appFont = PkgUtils.getLightFont();
 			
 			TextView aboutMainLabel = (TextView)aboutDialog.findViewById(R.id.aboutMainLabel);
 			TextView aboutDetailLabel = (TextView)aboutDialog.findViewById(R.id.aboutDetailLabel);
+			Button feedbackButton = (Button)aboutDialog.findViewById(R.id.feedbackButton);
+			feedbackButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					sendFeedback();
+				}
+			});
 			
 			aboutMainLabel.setTypeface(appFont);
 			aboutDetailLabel.setTypeface(appFont);
@@ -446,5 +456,19 @@ public class MainScanActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+	
+	private void sendFeedback() {
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("message/rfc822");
+		i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"support@trustlook.com"});
+		i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for trustlook 1.0.0");
+		i.putExtra(Intent.EXTRA_TEXT   , "trustlook 1.0.0\n");
+		
+		try {
+		    startActivity(Intent.createChooser(i, "Send mail..."));
+		} catch (android.content.ActivityNotFoundException ex) {
+		    Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+		}
 	}
 }

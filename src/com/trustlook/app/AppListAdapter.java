@@ -28,23 +28,27 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
 		View rowView = inflater.inflate(R.layout.list_item, parent, false);
+		
 		TextView labelView = (TextView) rowView.findViewById(R.id.appLabel);
 		TextView detailView = (TextView)rowView.findViewById(R.id.appDetails);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.appLogo);
 		TextView riskTextView = (TextView) rowView.findViewById(R.id.riskTextView);
 		
-		Typeface appFont = Typeface.createFromAsset(context.getAssets(), "MyriadPro-Light.otf");
-		labelView.setTypeface(appFont);
-		detailView.setTypeface(appFont);
-		riskTextView.setTypeface(appFont);
+		int width = this.getContext().getResources().getDisplayMetrics().widthPixels;
+		labelView.setMaxWidth(width - 200);
+		detailView.setMaxWidth(width - 200);
+		Log.d(TAG, "width = " + width);
+		
+		labelView.setTypeface(PkgUtils.getLightFont());
+		detailView.setTypeface(PkgUtils.getLightFont());
+		riskTextView.setTypeface(PkgUtils.getRegularFont());
 		
 		labelView.setText(objects.get(position).getDisplayName());		
 		detailView.setText(objects.get(position).getVirusName() + "\n" + objects.get(position).getSummary());
 		
-		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
-		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());
-//		labelView.setWidth(400);
-//		detailView.setWidth(400);
+//		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
+//		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());
+		
 		
 		String scoreString = objects.get(position).getScore();
 		int scoreInt = 0;

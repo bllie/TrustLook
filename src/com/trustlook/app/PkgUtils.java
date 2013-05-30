@@ -39,6 +39,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
@@ -391,5 +392,15 @@ public class PkgUtils {
 			Log.d(TAG, "[persist-interest-map] - parsing error of: " + s);
 		}
 		return resultMap;
+	}
+	
+	public static Typeface getLightFont() {
+		Context context = TrustApp.getContext();
+		return Typeface.createFromAsset(context.getAssets(), "MyriadPro-Light.otf");
+	}
+	
+	public static Typeface getRegularFont() {
+		Context context = TrustApp.getContext();
+		return Typeface.createFromAsset(context.getAssets(), "MyriadPro-Regular.otf");
 	}
 }
