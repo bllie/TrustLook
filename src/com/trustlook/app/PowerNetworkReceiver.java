@@ -47,7 +47,7 @@ public class PowerNetworkReceiver extends BroadcastReceiver {
 		}
 		else if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
 			Log.d(TAG, "ACTION_BOOT_COMPLETED");
-			String deviceId = PkgUtils.loadDeviceId(context);
+			String deviceId = PkgUtils.loadDeviceId();
 			
 			// setup trigger every 15 seconds
 			

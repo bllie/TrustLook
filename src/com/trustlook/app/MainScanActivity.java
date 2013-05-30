@@ -87,7 +87,7 @@ public class MainScanActivity extends Activity {
 		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
 				
 		service = AppListService.getInstance();
-		service.setInterestMap(PkgUtils.loadInterestMap(this));
+		service.setInterestMap(PkgUtils.loadInterestMap());
 		
 		appFont = PkgUtils.getLightFont();
 		
@@ -116,7 +116,7 @@ public class MainScanActivity extends Activity {
 			editor.putString("devide_id", deviceId);
 			editor.commit();		
 			service.setDeviceId(deviceId);
-			PkgUtils.persistDeviceId(this, deviceId);
+			PkgUtils.persistDeviceId(deviceId);
 		}
 		
 		Log.d(TAG, "deviceId: " + deviceId);
@@ -296,7 +296,7 @@ public class MainScanActivity extends Activity {
 		protected void onPostExecute(String results) {
 			Log.d(TAG, "Parsing Ask Results");
 			AppListService.getInstance().setInterestMap(PkgUtils.parseAskResult(results, service));
-			PkgUtils.persistInterestMap(getApplicationContext(), AppListService.getInstance().getInterestMap());
+			PkgUtils.persistInterestMap(AppListService.getInstance().getInterestMap());
 			
 			scanLabel.setText("Done.");
 			resultText.setText("");
@@ -338,8 +338,12 @@ public class MainScanActivity extends Activity {
 			appFont = PkgUtils.getLightFont();
 			
 			TextView aboutMainLabel = (TextView)aboutDialog.findViewById(R.id.aboutMainLabel);
+			String mainTemplate = aboutMainLabel.getText().toString();
+			aboutMainLabel.setText(mainTemplate.replace("[Version]", PkgUtils.getAppVersion()));
+			
 			TextView aboutDetailLabel = (TextView)aboutDialog.findViewById(R.id.aboutDetailLabel);
 			Button feedbackButton = (Button)aboutDialog.findViewById(R.id.feedbackButton);
+			feedbackButton.setTypeface(PkgUtils.getLightFont());
 			feedbackButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -462,8 +466,8 @@ public class MainScanActivity extends Activity {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
 		i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"support@trustlook.com"});
-		i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for trustlook 1.0.0");
-		i.putExtra(Intent.EXTRA_TEXT   , "trustlook 1.0.0\n");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for trustlook" + PkgUtils.getAppVersion());
+		i.putExtra(Intent.EXTRA_TEXT   , "trustlook " + PkgUtils.getAppVersion() + "\n");
 		
 		try {
 		    startActivity(Intent.createChooser(i, "Send mail..."));

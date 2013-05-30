@@ -43,8 +43,11 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		detailView.setTypeface(PkgUtils.getLightFont());
 		riskTextView.setTypeface(PkgUtils.getRegularFont());
 		
+		String virusName = objects.get(position).getVirusName();
+		String summary = objects.get(position).getSummary();
+		
 		labelView.setText(objects.get(position).getDisplayName());		
-		detailView.setText(objects.get(position).getVirusName() + "\n" + objects.get(position).getSummary());
+		detailView.setText(((virusName != null) ? virusName : "") + "\n" + ((summary != null) ? summary : ""));
 		
 //		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
 //		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());

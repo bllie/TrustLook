@@ -34,9 +34,8 @@ public class ApkUploadService extends IntentService{
 	protected void onHandleIntent(Intent intent) {
 
 		Log.d(TAG, "ApkUploadService triggerd ...");
-		Context context = this.getApplicationContext();
 		
-		Map<String, String> interestMap = PkgUtils.loadInterestMap(context);
+		Map<String, String> interestMap = PkgUtils.loadInterestMap();
 		if (interestMap != null && interestMap.size() > 0) {
 			// TODO not working in reboot device
 			Map.Entry<String, String> entry = interestMap.entrySet().iterator().next();
@@ -46,16 +45,16 @@ public class ApkUploadService extends IntentService{
 			String deviceId = intent.getStringExtra(Constants.DEVICE_ID);
 			
 			if (deviceId == null) {
-				deviceId = PkgUtils.loadDeviceId(context);
+				deviceId = PkgUtils.loadDeviceId();
 			}
 			
 			Log.d(TAG, "==> uploading " + apkFileName + " from device: " + deviceId + ", md5: " + md5);
 			
-			String logInfo = (PkgUtils.isCharged(context) ? "charged" : "not charged") + ", " + 
-			(PkgUtils.isWifiConntected(context) ? "wifi connected" : "no wifi") ;		
+			String logInfo = (PkgUtils.isCharged() ? "charged" : "not charged") + ", " + 
+			(PkgUtils.isWifiConntected() ? "wifi connected" : "no wifi") ;		
 			Log.d(TAG, logInfo);
 			
-			if (PkgUtils.isCharged(context) && PkgUtils.isWifiConntected(context)) {
+			if (PkgUtils.isCharged() && PkgUtils.isWifiConntected()) {
 				
 				String uploadResult = PkgUtils.uploadTrustLook(deviceId, new File(apkFileName), md5);
 				parseUploadResult(uploadResult);
@@ -78,9 +77,9 @@ public class ApkUploadService extends IntentService{
 			if (json.getBoolean("success") == true) {
 				String md5 = json.getString("md5");
 				Log.d(TAG, "[Success] APK Upload " + json.getString("md5"));
-				Map<String, String> interestMap = PkgUtils.loadInterestMap(getApplicationContext());
+				Map<String, String> interestMap = PkgUtils.loadInterestMap();
 				interestMap.remove(md5);
-				PkgUtils.persistInterestMap(getApplicationContext(), interestMap);
+				PkgUtils.persistInterestMap(interestMap);
 			}
 			else {
 				Log.d(TAG, "[Fail] APK Upload - No interest list update");

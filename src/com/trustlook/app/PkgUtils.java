@@ -303,49 +303,55 @@ public class PkgUtils {
 		return resultMap;
 	}
 	
-	public static boolean isWifiConntected(Context context) {
+	public static boolean isWifiConntected() {
+		Context context = TrustApp.getContext();
 		ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		return mWifi.isConnected();
 	}
 	
-	public static boolean isCharged(Context context) {
+	public static boolean isCharged() {
+		Context context = TrustApp.getContext();
 		Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
     }
 	
-	public boolean isNetworkAvailable(Context context) {
-	   ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	   if (connectivity == null) {
-	      Log.d(TAG, "getSystemService rend null");
-	   } else {
-	      NetworkInfo[] info = connectivity.getAllNetworkInfo();
-	      if (info != null) {
-	         for (int i = 0; i < info.length; i++) {
-	            if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-	               return true;
-	            }
-	         }
-	      }
-	   }
-	   return false;
+	public boolean isNetworkAvailable() {
+		Context context = TrustApp.getContext();
+		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity == null) {
+			Log.d(TAG, "getSystemService rend null");
+		} else {
+			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+			if (info != null) {
+				for (int i = 0; i < info.length; i++) {
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
-	public static String loadDeviceId(Context context) {
+	public static String loadDeviceId() {
+		Context context = TrustApp.getContext();
 		SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		return preferences.getString(Constants.PREF_KEY_DEVICE_ID, null);
 	}
 	
-	public static void persistDeviceId(Context context, String deviceId) {
+	public static void persistDeviceId(String deviceId) {
+		Context context = TrustApp.getContext();
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(Constants.PREF_KEY_DEVICE_ID, deviceId);
 		editor.commit();		
 	}
 	
-	public static void persistInterestMap(Context context, Map<String, String> interestMap) {
+	public static void persistInterestMap(Map<String, String> interestMap) {
+		Context context = TrustApp.getContext();
 		Log.d(TAG, "--> persist interest set of " + interestMap.size());
 		JSONArray arr = new JSONArray();
 		Iterator<String> it = interestMap.keySet().iterator();
@@ -370,7 +376,8 @@ public class PkgUtils {
 		editor.commit();
 	}
 	
-	public static Map<String, String> loadInterestMap(Context context) {		
+	public static Map<String, String> loadInterestMap() {		
+		Context context = TrustApp.getContext();
         SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
         Map<String, String> resultMap = parsePersistedInterestMap(preferences.getString(Constants.PREF_KEY_INTEREST_LIST, "[]"));
         Log.d(TAG, "--> loaded interest of " + resultMap.size());
@@ -402,5 +409,16 @@ public class PkgUtils {
 	public static Typeface getRegularFont() {
 		Context context = TrustApp.getContext();
 		return Typeface.createFromAsset(context.getAssets(), "MyriadPro-Regular.otf");
+	}
+	
+	public static String getAppVersion() {
+		Context context = TrustApp.getContext();
+		try {
+			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+			return versionName;
+		}
+		catch (Exception e) {
+			return "0.0.0";
+		}
 	}
 }
