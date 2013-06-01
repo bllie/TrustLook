@@ -45,10 +45,28 @@ import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.util.Log;
 
+
 public class PkgUtils {
 
 	private static final String TAG = "TL";
 
+	public enum RISK_LEVEL { HIGH, MEDIUM, LOW};
+	
+	public static RISK_LEVEL getRiskLevel(String scoreString) {
+		int scoreInt = 0;
+		try {
+			scoreInt = Math.round(Float.parseFloat(scoreString));
+		}
+		catch (Exception e) {
+			scoreInt = 0;
+		}
+		if (scoreInt >= 7)
+			return RISK_LEVEL.HIGH;
+		else if (scoreInt >= 3)
+			return RISK_LEVEL.MEDIUM;
+		else 
+			return RISK_LEVEL.LOW;
+	}
 	
 	public List<AppInfo> getAllPkgInfo(Context context, PackageManager packageManager) {
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -420,5 +438,5 @@ public class PkgUtils {
 		catch (Exception e) {
 			return "0.0.0";
 		}
-	}
+	}	
 }

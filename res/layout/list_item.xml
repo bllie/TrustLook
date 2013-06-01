@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="5dp" >
+    android:padding="10dp" >
 
     <!--  app logo -->
     <ImageView
@@ -49,15 +49,18 @@
     <TextView
         android:id="@+id/riskTextView"
         android:layout_alignParentRight="true"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
+        android:gravity="center"
         android:paddingLeft="2dp"
         android:textSize="20sp" 
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:maxLines="1" 
         android:lines="1"
         android:typeface="sans"
+        android:background="@drawable/risk_factor"
         android:text="@string/not_available">
     </TextView>                    
   

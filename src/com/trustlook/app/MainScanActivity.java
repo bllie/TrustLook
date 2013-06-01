@@ -31,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.text.Html;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -67,9 +68,7 @@ public class MainScanActivity extends Activity {
 	private TextView resultText;
 	private TextView percentTextView;
 	private RelativeLayout progressComboLayout;
-	
-	private Typeface appFont;
-	
+		
 	private boolean scanMode;
 	
 	ScanApps scanTask;
@@ -88,9 +87,7 @@ public class MainScanActivity extends Activity {
 				
 		service = AppListService.getInstance();
 		service.setInterestMap(PkgUtils.loadInterestMap());
-		
-		appFont = PkgUtils.getLightFont();
-		
+				
 		// UI widgets
 		scanLabel = (TextView)findViewById(R.id.scanLabel);
 		resultText = (TextView)findViewById(R.id.resultText);
@@ -99,9 +96,9 @@ public class MainScanActivity extends Activity {
 		mProgressBar = (ProgressBar) findViewById(R.id.scanBar);
 		progressComboLayout = (RelativeLayout)findViewById(R.id.progressComboLayout);
 		
-		scanLabel.setTypeface(appFont);
-		resultText.setTypeface(appFont);
-		percentTextView.setTypeface(appFont);
+		scanLabel.setTypeface(PkgUtils.getRegularFont());
+		resultText.setTypeface(PkgUtils.getRegularFont());
+		percentTextView.setTypeface(PkgUtils.getLightFont());
 		
 				
 		preferences = getSharedPreferences(Constants.PREFERENCE_NAME, 0);
@@ -155,13 +152,13 @@ public class MainScanActivity extends Activity {
 		
 		isIncludeSystem = Boolean.parseBoolean(getString(R.string.includeSystem));
 		
-		pkgInfoList = getLocalAppsPkgInfo(false);
+		pkgInfoList = getLocalAppsPkgInfo(isIncludeSystem);
 		totalApps = pkgInfoList.size();
 		
 		mProgressBar.setMax(totalApps);
 		
 		scanButton = (Button)findViewById(R.id.scanButton);
-		scanButton.setTypeface(appFont);
+		scanButton.setTypeface(PkgUtils.getLightFont());
 		scanMode = true;
 		
 		scanButton.setOnClickListener(new View.OnClickListener() {			
@@ -221,6 +218,9 @@ public class MainScanActivity extends Activity {
 			FlurryAgent.logEvent(Constants.EVENT_SCAN, fParams);
 			
 			for (PackageInfo pi : pkgInfoList) {
+				if (isSystemPackage(pi)) {
+					continue;
+				}
 				AppInfo appInfo = new AppInfo(
 						pi.applicationInfo.loadLabel(getPackageManager()).toString(), 
 						pi.applicationInfo.processName);
@@ -251,7 +251,8 @@ public class MainScanActivity extends Activity {
 			
 			// Log.d(TAG, "mProgressStatus: " + mProgressStatus);
 			mProgressBar.setProgress(mProgressStatus);
-			percentTextView.setText(String.format("%.0f%%", (float)(100*mProgressStatus)/totalApps));
+			String s = String.format("%.0f", (float)(100*mProgressStatus)/totalApps);
+			percentTextView.setText(Html.fromHtml("<big>" + s + "</big>" + "<small>%</small>"));
 		}
 		
 		@Override
@@ -335,7 +336,6 @@ public class MainScanActivity extends Activity {
 			aboutDialog.setContentView(R.layout.about);
 			aboutDialog.setTitle("About TrustLook");
 			aboutDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,R.drawable.ic_launcher);
-			appFont = PkgUtils.getLightFont();
 			
 			TextView aboutMainLabel = (TextView)aboutDialog.findViewById(R.id.aboutMainLabel);
 			String mainTemplate = aboutMainLabel.getText().toString();
@@ -352,8 +352,8 @@ public class MainScanActivity extends Activity {
 				}
 			});
 			
-			aboutMainLabel.setTypeface(appFont);
-			aboutDetailLabel.setTypeface(appFont);
+			aboutMainLabel.setTypeface(PkgUtils.getLightFont());
+			aboutDetailLabel.setTypeface(PkgUtils.getLightFont());
 			
 			aboutDialog.show();
 			return true;

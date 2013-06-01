@@ -2,90 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBF3F6"
     android:orientation="vertical"
-    android:paddingTop="10dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="#EBF3F6"
- >
+    android:paddingTop="0dp" >
 
-    <RelativeLayout 
+    <!-- on-scan layout -->
+    <RelativeLayout
         android:id="@+id/progressComboLayout"
-        android:visibility="gone"
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content"  
-        android:layout_marginLeft="10dp" 
-        android:layout_marginRight="10dp" 
-        android:layout_marginTop="40dp"
-        android:layout_gravity="center_horizontal">
-        
-        <ProgressBar 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" >
+
+        <ProgressBar
             android:id="@+id/scanBar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
             android:layout_centerInParent="true"
             android:indeterminate="false"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:progressDrawable="@drawable/circular_progress"/>    
-    
-        <TextView  
-             android:id="@+id/tv_progress_circle"  
-             android:layout_width="wrap_content"  
-             android:layout_height="wrap_content"  
-             android:layout_centerInParent="true"  
-             android:background="@android:color/transparent"  
-             android:gravity="center"  
-             android:textColor="#00BFFF"
-             android:textSize="38sp" />                 
+            android:progressDrawable="@drawable/circular_progress" />
+
+        <TextView
+            android:id="@+id/tv_progress_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:textColor="#00BFFF"
+            android:textSize="40sp" />
     </RelativeLayout>
 
-         
-    <!--  flashing when scanning -->    
-    <TextView 
+    <!-- flashing when scanning -->
+
+    <TextView
         android:id="@+id/scanLabel"
-        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:gravity="center_horizontal"
-        android:maxLines="1" 
-        android:textSize="20sp"
+        android:maxLines="1"
+        android:text="Scanning"
         android:textIsSelectable="false"
-        android:text="Scanning"/>
- 
-    <TextView 
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/resultText"
-        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:maxLines="3" 
+        android:maxLines="2"
+        android:textIsSelectable="false"
         android:textSize="16sp"
-        android:textIsSelectable="false"/>
-        
+        android:visibility="gone" />
+
+    <!-- pre-scan image -->
     <ImageView
         android:id="@+id/scan_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/amplifier"
-        android:contentDescription="@string/scan_image" >
+        android:layout_marginTop="40dp"
+        android:contentDescription="@string/scan_image"
+        android:src="@drawable/amplifier_3d" >
     </ImageView>
-    
-    <!--  scan button -->
-    <Button 
+
+    <!-- scan button -->
+
+    <Button
         android:id="@+id/scanButton"
-        android:layout_height="100dp"
         android:layout_width="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/scanButton_title"
-        android:textSize="40sp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/scan_button"
+        android:onClick="scan"
+        android:text="@string/scanButton_title"
         android:textColor="#FFFFFF"
-        android:onClick="scan"/>   
+        android:textSize="40sp" />
+
 </LinearLayout>

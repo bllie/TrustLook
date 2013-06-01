@@ -4,8 +4,9 @@ import java.util.List;
 
 import android.widget.ArrayAdapter;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.widget.*;
 import android.util.Log;
 import android.view.*;
@@ -39,8 +40,8 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		detailView.setMaxWidth(width - 200);
 		Log.d(TAG, "width = " + width);
 		
-		labelView.setTypeface(PkgUtils.getLightFont());
-		detailView.setTypeface(PkgUtils.getLightFont());
+		labelView.setTypeface(PkgUtils.getRegularFont());
+		detailView.setTypeface(PkgUtils.getRegularFont());
 		riskTextView.setTypeface(PkgUtils.getRegularFont());
 		
 		String virusName = objects.get(position).getVirusName();
@@ -54,14 +55,28 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		
 		
 		String scoreString = objects.get(position).getScore();
-		int scoreInt = 0;
-		try {
-			scoreInt = Math.round(Float.parseFloat(scoreString));
+		PkgUtils.RISK_LEVEL riskLevel = PkgUtils.getRiskLevel(scoreString);
+		String riskText = "L";
+		int backgroundColor = Color.GRAY;
+		GradientDrawable bgShape = (GradientDrawable)riskTextView.getBackground();
+		switch (riskLevel) {
+			case HIGH:
+				riskText = "H";
+				backgroundColor = Color.parseColor("#EE8B8B");
+				break;
+			case MEDIUM:
+				riskText = "M";
+				backgroundColor = Color.parseColor("#F7C98B");
+				break;
+			case LOW:
+				riskText = "L";
+				backgroundColor = Color.parseColor("#0CBA98");
+				break;
+			default:
+				break;
 		}
-		catch (Exception e) {
-			scoreInt = 0;
-		}
-		riskTextView.setText("" + scoreInt);
+		bgShape.setColor(backgroundColor);
+		riskTextView.setText(riskText);
    
 		Drawable icon = objects.get(position).getIcon();
 		
