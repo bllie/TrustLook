@@ -39,6 +39,10 @@ public class AppListService {
 		this.appInfoList = appInfoList;
 	}
 	
+	public void resetsetAppInfoList() {
+		this.appInfoList.clear();
+	}
+	
 	public Map<String, String> getInterestMap() {
 		return this.interestMap;
 	}

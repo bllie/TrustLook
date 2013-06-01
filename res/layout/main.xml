@@ -9,17 +9,19 @@
     tools:context=".MainActivity" >
     
     <!--  top label -->
-    <TextView
+<!--     <TextView
         android:id="@+id/topLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="middle"
         android:layout_marginBottom="5sp"
-        android:text="@string/list_subject" />
+        android:text="@string/list_subject" /> -->
+   
+    <include android:id="@+id/topBanner" layout="@layout/top_banner"/>   
     
     <ListView android:id="@+id/listView" 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topLabel"/>
+        android:layout_below="@id/topBanner"/>
 
 </RelativeLayout>

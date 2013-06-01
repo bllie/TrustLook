@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/totalAppsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/lowRiskLabel"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|right"
+            android:background="#0CBA98"           
+            android:gravity="center"
+            android:text="@string/risk_low"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/moderateRiskLabel"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|right"
+            android:background="#F7C98B"
+            android:gravity="center"
+            android:text="@string/risk_moderate"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/highRiskLabel"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|right"
+            android:background="#EE8B8B"
+            android:gravity="center"
+            android:text="@string/risk_high"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,8 +52,9 @@ public class MainActivity extends Activity {
 		preferences = getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		deviceId = preferences.getString("device_id", "NOT_AVAILABLE");
 		
-		subjectTextView = (TextView)findViewById(R.id.topLabel);
-		subjectTextView.setText("Total " + appInfoList.size() + " apps");
+		subjectTextView = (TextView)findViewById(R.id.totalAppsLabel);
+		subjectTextView.setTypeface(PkgUtils.getLightFont());
+		subjectTextView.setText(Html.fromHtml("Total: <big>" + appInfoList.size() + "</big>"));
 		
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);

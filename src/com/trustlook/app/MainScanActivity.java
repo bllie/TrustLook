@@ -181,6 +181,9 @@ public class MainScanActivity extends Activity {
 					scanButton.setText("Cancel");
 					scanMode = false;		
 					
+					appInfoList.clear();
+					AppListService.getInstance().resetsetAppInfoList();
+					
 					scanTask = new ScanApps();
 					scanTask.execute();
 					
@@ -371,10 +374,19 @@ public class MainScanActivity extends Activity {
 		Context context = getApplicationContext();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<PackageInfo> pkgInfoList = context.getPackageManager().getInstalledPackages(0);
-		Log.d(TAG, "Total packages: " + pkgInfoList.size());
+		List<PackageInfo> pkgInfoList = context.getPackageManager().getInstalledPackages(0);
+		List<PackageInfo> resultPkgInfoList = new ArrayList<PackageInfo>();
 		
-		return pkgInfoList;
+		if (!includeSystem) {
+			for (PackageInfo pkgInfo : pkgInfoList) {
+				if (!isSystemPackage(pkgInfo)) {
+					resultPkgInfoList.add(pkgInfo);
+				}
+			}
+		}
+		Log.d(TAG, "Total packages: " + resultPkgInfoList.size());
+		
+		return resultPkgInfoList;
 	}
 	
 	private boolean isSystemPackage(PackageInfo pkgInfo) {
