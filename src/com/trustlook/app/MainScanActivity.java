@@ -237,6 +237,7 @@ public class MainScanActivity extends Activity {
 	            appInfo.setSha1(sha1);
 	            appInfo.setSizeInBytes(apkFile.length());
 	            appInfo.setVersion(pi.versionName);
+	            appInfo.setLastUpdate(pi.lastUpdateTime);
 	            
 	            Log.d(TAG, "Scanning " + appInfo.getApkPath());
 	            

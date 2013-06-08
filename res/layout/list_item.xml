@@ -30,16 +30,15 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@+id/label"
-            android:textSize="16sp" >
+            android:textSize="18sp" >
         </TextView>
         <TextView
             android:id="@+id/appDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp" 
-            android:maxLines="2" 
-            android:lines="2"
-            android:typeface="sans"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp" 
+            android:maxLines="1" 
             android:text="@string/sample_text"
             android:ellipsize="end" >
         </TextView>            

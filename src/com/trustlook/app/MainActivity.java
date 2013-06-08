@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 	String deviceId = null;
 	
 	List<AppInfo> appInfoList = AppListService.getInstance().getAppInfoList();
-	
+	AppListAdapter adapter = null;
 	AppInfo selectedApp = null;
 	
 	@Override
@@ -63,7 +63,8 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "==> screenWidth: " + screenWidth);
 
 		appListView = (ListView)findViewById(R.id.listView);
-		appListView.setAdapter(new AppListAdapter(this, appInfoList));
+		adapter = new AppListAdapter(this, appInfoList);
+		appListView.setAdapter(adapter);
 		
 		appListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,7 +95,7 @@ public class MainActivity extends Activity {
 	    	
 	    	   this.finish();
 	    	   
-	       //your stuff goes here
+	    	   //your stuff goes here
 	       }
 	    return super.onKeyDown(keyCode, event);
 	}
@@ -125,8 +126,9 @@ public class MainActivity extends Activity {
 	             FlurryAgent.logEvent("delete_app", fParams);
 	             
 	             // TODO
+	             
 	             // mApps.remove(appPosition);
-	             // mAdapter.notifyDataSetChanged(); // update the UI
+	             adapter.notifyDataSetChanged(); // update the UI
 	          }
 		});
 	       

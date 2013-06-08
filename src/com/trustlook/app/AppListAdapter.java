@@ -1,5 +1,7 @@
 package com.trustlook.app;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.widget.ArrayAdapter;
@@ -8,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.widget.*;
+import android.text.Html;
 import android.util.Log;
 import android.view.*;
 import com.trustlook.app.R;
@@ -36,8 +39,8 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		TextView riskTextView = (TextView) rowView.findViewById(R.id.riskTextView);
 		
 		int width = this.getContext().getResources().getDisplayMetrics().widthPixels;
-		labelView.setMaxWidth(width - 200);
-		detailView.setMaxWidth(width - 200);
+//		labelView.setMaxWidth(width - 120);
+//		detailView.setMaxWidth(width - 300);
 		Log.d(TAG, "width = " + width);
 		
 		labelView.setTypeface(PkgUtils.getRegularFont());
@@ -48,7 +51,12 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		String summary = objects.get(position).getSummary();
 		
 		labelView.setText(objects.get(position).getDisplayName());		
-		detailView.setText(((virusName != null) ? virusName : "") + "\n" + ((summary != null) ? summary : ""));
+		// detailView.setText(((virusName != null) ? virusName : "") + " - " + ((summary != null) ? summary : ""));
+		
+		Date lastUpdate = new Date(objects.get(position).getLastUpdate());
+		String lastUpdateStr = new SimpleDateFormat("yyyy-MM-dd").format(lastUpdate);
+		detailView.setText(Html.fromHtml("<font color=\"#1874CD\">" + PkgUtils.formatFileSize(objects.get(position).getSizeInBytes()) + "</font>\t\t\t<font color=\"#AAAAAA\">" + lastUpdateStr + "</font>"));
+		// Html.fromHtml("Total: <big>" + appInfoList.size() + "</big>"
 		
 //		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
 //		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());

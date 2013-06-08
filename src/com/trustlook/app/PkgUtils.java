@@ -154,19 +154,19 @@ public class PkgUtils {
 	   double sizeInUnit = 0d;
 	         
 	   if (size > 1024 * 1024 * 1024) { // Gigabyte
-		   sizeInUnit = size / (1024 * 1024 * 1024);
+		   sizeInUnit = (double)size / (1024 * 1024 * 1024);
 		   unit = "GB";
 	   } 
 	   else if (size > 1024 * 1024) { // Megabyte
-		   sizeInUnit = size / (1024 * 1024);
+		   sizeInUnit = (double)size / (1024 * 1024);
 		   unit = "MB";
 	   } 
 	   else if (size > 1024) { // Kilobyte
-		   sizeInUnit = size / 1024;
+		   sizeInUnit = (double)size / 1024;
 		   unit = "KB";
 	   } 
 	   else { // Byte
-		   sizeInUnit = size;
+		   sizeInUnit = (double)size;
 	   }      
 	   
 	   // only show two digits after the comma

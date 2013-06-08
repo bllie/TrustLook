@@ -12,6 +12,7 @@ public class AppInfo implements Comparable<AppInfo>{
 	private String sha1;
 	private Drawable icon;
 	private String apkPath;
+	private long lastUpdate;
 	
 	// scan result part
 	private String score;
@@ -160,5 +161,13 @@ public class AppInfo implements Comparable<AppInfo>{
 		catch (NumberFormatException e) {
 			return 0;
 		}
+	}
+
+	public long getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 }
