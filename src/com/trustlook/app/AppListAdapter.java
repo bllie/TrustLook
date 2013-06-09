@@ -35,6 +35,7 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		
 		TextView labelView = (TextView) rowView.findViewById(R.id.appLabel);
 		TextView detailView = (TextView)rowView.findViewById(R.id.appDetails);
+		TextView appSizeView = (TextView)rowView.findViewById(R.id.appSize);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.appLogo);
 		TextView riskTextView = (TextView) rowView.findViewById(R.id.riskTextView);
 		
@@ -45,6 +46,7 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		
 		labelView.setTypeface(PkgUtils.getRegularFont());
 		detailView.setTypeface(PkgUtils.getRegularFont());
+		appSizeView.setTypeface(PkgUtils.getRegularFont());
 		riskTextView.setTypeface(PkgUtils.getRegularFont());
 		
 		String virusName = objects.get(position).getVirusName();
@@ -55,13 +57,15 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		
 		Date lastUpdate = new Date(objects.get(position).getLastUpdate());
 		String lastUpdateStr = new SimpleDateFormat("yyyy-MM-dd").format(lastUpdate);
-		detailView.setText(Html.fromHtml("<font color=\"#1874CD\">" + PkgUtils.formatFileSize(objects.get(position).getSizeInBytes()) + "</font>\t\t\t<font color=\"#AAAAAA\">" + lastUpdateStr + "</font>"));
-		// Html.fromHtml("Total: <big>" + appInfoList.size() + "</big>"
+//		detailView.setText(Html.fromHtml("<font color=\"#AAAAAA\">" + lastUpdateStr + "</font>" + "\t\t\t" + "<font color=\"#1874CD\">" + 
+//				PkgUtils.formatFileSize(objects.get(position).getSizeInBytes()) + 
+//				"</font>"));
 		
-//		Log.d(TAG, "rowView - width: " + rowView.getWidth() + ", height: " + rowView.getHeight());
-//		Log.d(TAG, "imageView - width: " + imageView.getWidth() + ", height: " + imageView.getHeight());
-		
-		
+		detailView.setText(Html.fromHtml("<font color=\"#AAAAAA\">" + lastUpdateStr + "</font>"));
+		appSizeView.setText(Html.fromHtml("<font color=\"#1874CD\">" + 
+				PkgUtils.formatFileSize(objects.get(position).getSizeInBytes()) + 
+				"</font>"));
+
 		String scoreString = objects.get(position).getScore();
 		PkgUtils.RISK_LEVEL riskLevel = PkgUtils.getRiskLevel(scoreString);
 		String riskText = "L";

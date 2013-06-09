@@ -84,7 +84,7 @@
         android:layout_height="100dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/scan_button"
         android:onClick="scan"
         android:text="@string/scanButton_title"

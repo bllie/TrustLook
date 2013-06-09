@@ -17,7 +17,7 @@
         android:layout_marginBottom="5sp"
         android:text="@string/list_subject" /> -->
    
-    <include android:id="@+id/topBanner" layout="@layout/top_banner"/>   
+    <include android:id="@+id/topBanner" layout="@layout/top_banner_2"/>   
     
     <ListView android:id="@+id/listView" 
         android:layout_width="match_parent"

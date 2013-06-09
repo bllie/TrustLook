@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="10dp" >
+    android:padding="4dp" >
 
-    <!--  app logo -->
+    <!-- app logo -->
+
     <ImageView
         android:id="@+id/appLogo"
         android:layout_width="48dp"
@@ -13,17 +14,19 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:src="@drawable/windowsmobile_logo"
-        android:contentDescription="@string/app_logo" >
+        android:contentDescription="@string/app_logo"
+        android:src="@drawable/windowsmobile_logo" >
     </ImageView>
- 
-    <!--  middle android:layout_width="180dp" -->
-    <LinearLayout 
+
+    <!-- middle android:layout_width="180dp" -->
+
+    <LinearLayout
         android:id="@+id/midLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_toRightOf="@id/appLogo"
-        android:orientation="vertical"   
-        android:layout_height="match_parent">
+        android:orientation="vertical" >
+
         <TextView
             android:id="@+id/appLabel"
             android:layout_width="wrap_content"
@@ -32,35 +35,56 @@
             android:text="@+id/label"
             android:textSize="18sp" >
         </TextView>
-        <TextView
-            android:id="@+id/appDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="16sp" 
-            android:maxLines="1" 
-            android:text="@string/sample_text"
-            android:ellipsize="end" >
-        </TextView>            
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/appDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/sample_text"
+                android:textSize="16sp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/appSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="70dp"
+                android:gravity="right"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="16sp" >
+            </TextView>
+        </LinearLayout>
     </LinearLayout>
-    
+
     <!-- score -->
+
     <TextView
         android:id="@+id/riskTextView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:gravity="center"
-        android:paddingLeft="2dp"
-        android:textSize="20sp" 
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:maxLines="1" 
-        android:lines="1"
-        android:typeface="sans"
+        android:layout_marginRight="16dp"
         android:background="@drawable/risk_factor"
-        android:text="@string/not_available">
-    </TextView>                    
-  
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="2dp"
+        android:text="@string/not_available"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans" >
+    </TextView>
+
 </RelativeLayout>

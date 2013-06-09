@@ -56,6 +56,14 @@ public class MainActivity extends Activity {
 		subjectTextView.setTypeface(PkgUtils.getLightFont());
 		subjectTextView.setText(Html.fromHtml("Total: <big>" + appInfoList.size() + "</big>"));
 		
+		TextView lowRiskLabel = (TextView)findViewById(R.id.lowRiskLabel);
+		TextView modRiskLabel = (TextView)findViewById(R.id.moderateRiskLabel);
+		TextView highRiskLabel = (TextView)findViewById(R.id.highRiskLabel);
+		
+		lowRiskLabel.setTypeface(PkgUtils.getLightFont());
+		modRiskLabel.setTypeface(PkgUtils.getLightFont());
+		highRiskLabel.setTypeface(PkgUtils.getLightFont());
+		
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		
@@ -78,10 +86,11 @@ public class MainActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
+				
 				Intent intent = new Intent(this, MainScanActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				return true;
+				this.finish();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -92,10 +101,8 @@ public class MainActivity extends Activity {
 	       if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 	    	   Intent intent = new Intent(this, MainScanActivity.class);
 	    	   startActivity(intent);
-	    	
-	    	   this.finish();
-	    	   
-	    	   //your stuff goes here
+	    	   Log.d(TAG, "onKeyDown");
+	    	   this.finish();	    	   
 	       }
 	    return super.onKeyDown(keyCode, event);
 	}

@@ -9,18 +9,26 @@
         android:shape="ring"
         android:thicknessRatio="6.0" >
         <gradient
-            android:endColor="#80ADD7"
-            android:startColor="#80ADD7"
+            android:endColor="#23ADCD"
+            android:startColor="#23ADCD"
             android:type="sweep"
             android:useLevel="true" />
     </shape>
 </item>
 <item>
     <rotate
-        android:drawable="@drawable/progress_particle_old"
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toDegrees="360" />
+        android:toDegrees="360">
+                <shape
+                android:shape="line" >
+               
+                <stroke
+                    android:width="1dip"                   
+                    android:color="#FF0000" />
+                <size android:height="2dp"/>
+            </shape>
+    </rotate>
 </item>
 </layer-list>
