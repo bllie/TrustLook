@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import android.graphics.drawable.Drawable;
 
-public class AppInfo implements Comparable<AppInfo>{
+public class AppInfo implements Comparable<AppInfo> {
 	private String displayName;
 	private String packageName;
 	private String md5;
@@ -13,7 +13,7 @@ public class AppInfo implements Comparable<AppInfo>{
 	private Drawable icon;
 	private String apkPath;
 	private long lastUpdate;
-	
+
 	// scan result part
 	private String score;
 	private String summary;
@@ -22,7 +22,7 @@ public class AppInfo implements Comparable<AppInfo>{
 
 	private long sizeInBytes;
 	private String version;
-	
+
 	public String getReportUrl() {
 		return reportUrl;
 	}
@@ -30,7 +30,7 @@ public class AppInfo implements Comparable<AppInfo>{
 	public void setReportUrl(String reportUrl) {
 		this.reportUrl = reportUrl;
 	}
-	
+
 	public long getSizeInBytes() {
 		return sizeInBytes;
 	}
@@ -50,37 +50,44 @@ public class AppInfo implements Comparable<AppInfo>{
 	public AppInfo(String displayName, String packageName) {
 		this(displayName, packageName, "", "");
 	}
-	
-	public AppInfo(String displayName, String packageName, String md5, String sha1) {
+
+	public AppInfo(String displayName, String packageName, String md5,
+			String sha1) {
 		super();
 		this.displayName = displayName;
 		this.packageName = packageName;
 		this.md5 = md5;
 		this.sha1 = sha1;
 	}
-	
+
 	public String getApkPath() {
 		return apkPath;
 	}
+
 	public void setApkPath(String apkPath) {
 		this.apkPath = apkPath;
 	}
-	
+
 	public String getDisplayName() {
 		return displayName;
 	}
+
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
+
 	public String getPackageName() {
 		return packageName;
 	}
+
 	public void setPackageName(String name) {
 		this.packageName = name;
 	}
+
 	public String getMd5() {
 		return md5;
 	}
+
 	public void setMd5(String md5) {
 		this.md5 = md5;
 	}
@@ -88,16 +95,19 @@ public class AppInfo implements Comparable<AppInfo>{
 	public String getSha1() {
 		return sha1;
 	}
+
 	public void setSha1(String sha1) {
 		this.sha1 = sha1;
 	}
+
 	public Drawable getIcon() {
 		return icon;
 	}
+
 	public void setIcon(Drawable icon) {
 		this.icon = icon;
 	}
-	
+
 	public String getScore() {
 		return score;
 	}
@@ -127,26 +137,26 @@ public class AppInfo implements Comparable<AppInfo>{
 		return "AppInfo [displayName=" + displayName + ", packageName="
 				+ packageName + ", md5=" + md5 + ", score=" + score + "]";
 	}
-	
-//	public JSONObject toJSON2() {
-//		JSONObject json = new JSONObject();
-//		try {
-//			json.put("MD5", getMd5());
-//			json.put("score",  getScore());
-//		}
-//	}
-	
+
+	// public JSONObject toJSON2() {
+	// JSONObject json = new JSONObject();
+	// try {
+	// json.put("MD5", getMd5());
+	// json.put("score", getScore());
+	// }
+	// }
+
 	public JSONObject toJSON() {
-	    JSONObject jsonObject= new JSONObject();
-	    try {
-	        jsonObject.put("packageName", getPackageName());
-	        jsonObject.put("MD5", getMd5());
-	        jsonObject.put("SHA1", getSha1());
-	        System.out.println("JSON string: " + jsonObject.toString());
-	    } catch (JSONException e) {
-	        e.printStackTrace();
-	    }
-	    return jsonObject;
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("packageName", getPackageName());
+			jsonObject.put("MD5", getMd5());
+			jsonObject.put("SHA1", getSha1());
+			System.out.println("JSON string: " + jsonObject.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 
 	@Override
@@ -156,9 +166,9 @@ public class AppInfo implements Comparable<AppInfo>{
 		if (another == null || another.score == null)
 			return -1;
 		try {
-			return (Double.parseDouble(this.score) > Double.parseDouble(another.score)) ? -1 : 1;
-		}
-		catch (NumberFormatException e) {
+			return (Double.parseDouble(this.score) > Double
+					.parseDouble(another.score)) ? -1 : 1;
+		} catch (NumberFormatException e) {
 			return 0;
 		}
 	}
