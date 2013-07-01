@@ -240,17 +240,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
         if (error == null) {
             title = getString(R.string.success);
             String id = result.cast(GraphObjectWithId.class).getId();
-            alertMessage = getString(R.string.successfully_posted_post, message, id);
+            alertMessage = getString(R.string.successfully_posted_post, "");
         } else {
             title = getString(R.string.error);
             alertMessage = error.getErrorMessage();
         }
-
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(alertMessage)
-                .setPositiveButton(R.string.ok, null)
-                .show();
+        Log.d(TAG, "message: " + message);
+        Toast.makeText(getApplicationContext(), alertMessage, Toast.LENGTH_SHORT).show();
     }
     
     private void handlePendingAction() {
@@ -352,6 +348,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
             if (hasPublishPermission()) {
                 handlePendingAction();
             } else {
+            	// handlePendingAction();
                 // We need to get new permissions, then complete the action when we get called back.
                 session.requestNewPublishPermissions(new Session.NewPermissionsRequest(this, PERMISSIONS));
             }
@@ -391,6 +388,35 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		selectedApp = appInfoList.get(position);
 		launchAppOPDialog();
+	}
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
 	}
 
 }
