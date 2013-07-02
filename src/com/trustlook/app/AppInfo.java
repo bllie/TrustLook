@@ -4,8 +4,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class AppInfo implements Comparable<AppInfo> {
+	
+	private static final String TAG = "TL";
+	
 	private String displayName;
 	private String packageName;
 	private String md5;
@@ -160,14 +164,18 @@ public class AppInfo implements Comparable<AppInfo> {
 
 	@Override
 	public int compareTo(AppInfo another) {
+		Log.d(TAG, "compare " + this.getMd5() + "(" + this.getScore() + ")" + " with " + another.getMd5() + "(" + another.getScore() + ")");
+		if (this == another)
+			return 0;
 		if (this.score == null)
 			return 1;
 		if (another == null || another.score == null)
 			return -1;
 		try {
-			return (Double.parseDouble(this.score) > Double
-					.parseDouble(another.score)) ? -1 : 1;
-		} catch (NumberFormatException e) {
+			// return (Double.parseDouble(this.score) > Double.parseDouble(another.score)) ? -1 : 1;
+			return (int)(Double.parseDouble(another.score) - Double.parseDouble(this.score));
+		} 
+		catch (NumberFormatException e) {
 			return 0;
 		}
 	}

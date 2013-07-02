@@ -55,6 +55,7 @@ import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
+import com.trustlook.app.tests.TestActivity;
 
 public class MainScanActivity extends Activity {
 
@@ -354,6 +355,11 @@ public class MainScanActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		
+		case R.id.unit_test:
+			Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
+			startActivity(testIntent);
+			return (true);
 		case R.id.about_drapp:
 
 			final Dialog aboutDialog = new Dialog(this);

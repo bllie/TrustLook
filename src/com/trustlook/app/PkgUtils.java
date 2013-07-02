@@ -335,7 +335,6 @@ public class PkgUtils {
 				}
 				
 			}
-
 			// sort based on risk score descending
 			Collections.sort(appInfoList);
 		} catch (JSONException e) {
@@ -465,14 +464,12 @@ public class PkgUtils {
 
 	public static Typeface getLightFont() {
 		Context context = TrustApp.getContext();
-		return Typeface.createFromAsset(context.getAssets(),
-				"MyriadPro-Light.otf");
+		return Typeface.createFromAsset(context.getAssets(), "MyriadPro-Light.otf");
 	}
 
 	public static Typeface getRegularFont() {
 		Context context = TrustApp.getContext();
-		return Typeface.createFromAsset(context.getAssets(),
-				"MyriadPro-Regular.otf");
+		return Typeface.createFromAsset(context.getAssets(), "MyriadPro-Regular.otf");
 	}
 
 	public static String getAppVersion() {
