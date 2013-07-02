@@ -51,8 +51,7 @@ public class AppInfo implements Comparable<AppInfo> {
 		this(displayName, packageName, "", "");
 	}
 
-	public AppInfo(String displayName, String packageName, String md5,
-			String sha1) {
+	public AppInfo(String displayName, String packageName, String md5, String sha1) {
 		super();
 		this.displayName = displayName;
 		this.packageName = packageName;

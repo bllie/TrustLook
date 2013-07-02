@@ -31,7 +31,7 @@
     <string name="ok">OK</string>
     <string name="hello_user">Hello %1$s. Now you can share your app risk report with your friends!</string>
     <string name="success">Success</string>
-    <string name="successfully_posted_post">Successfully posted %1$s</string>
+    <string name="successfully_posted_post">Successfully Shared %1$s</string>
     <string name="error">Error</string>
     <string name="status_update">Updating status for %1$s at %2$s</string>
     <string name="photo_post">Photo Post</string>

@@ -248,8 +248,7 @@ public class MainScanActivity extends Activity {
 				AppInfo appInfo = new AppInfo(pi.applicationInfo.loadLabel(
 						getPackageManager()).toString(),
 						pi.applicationInfo.processName);
-				appInfo.setIcon(pi.applicationInfo
-						.loadIcon(getPackageManager()));
+				appInfo.setIcon(pi.applicationInfo.loadIcon(getPackageManager()));
 				appInfo.setApkPath(pi.applicationInfo.publicSourceDir);
 
 				File apkFile = new File(appInfo.getApkPath());
@@ -277,10 +276,8 @@ public class MainScanActivity extends Activity {
 
 			// Log.d(TAG, "mProgressStatus: " + mProgressStatus);
 			mProgressBar.setProgress(mProgressStatus);
-			String s = String.format("%.0f", (float) (100 * mProgressStatus)
-					/ totalApps);
-			percentTextView.setText(Html.fromHtml("<big>" + s + "</big>"
-					+ "<small>%</small>"));
+			String s = String.format("%.0f", (float) (100 * mProgressStatus) / totalApps);
+			percentTextView.setText(Html.fromHtml("<big>" + s + "</big>" + "<small>%</small>"));
 		}
 
 		@Override
@@ -293,13 +290,12 @@ public class MainScanActivity extends Activity {
 			Log.d(TAG, "TrustLook Results: " + results);
 			scanLabel.setText("Checking ...");
 			resultText.setText("");
-			parseQueryResult(results);
+			appInfoList = PkgUtils.parseQueryResult((ArrayList<AppInfo>)appInfoList, results);
 
 			// make the 'ask' request
 			new AskTask().execute();
 
-			Intent intent = new Intent(getApplicationContext(),
-					MainActivity.class);
+			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 			startActivity(intent);
 			finish();
 		}
@@ -324,10 +320,8 @@ public class MainScanActivity extends Activity {
 		@Override
 		protected void onPostExecute(String results) {
 			Log.d(TAG, "Parsing Ask Results");
-			AppListService.getInstance().setInterestMap(
-					PkgUtils.parseAskResult(results, service));
-			PkgUtils.persistInterestMap(AppListService.getInstance()
-					.getInterestMap());
+			AppListService.getInstance().setInterestMap(PkgUtils.parseAskResult(results, service));
+			PkgUtils.persistInterestMap(AppListService.getInstance().getInterestMap());
 
 			scanLabel.setText("Done.");
 			resultText.setText("");
@@ -366,19 +360,14 @@ public class MainScanActivity extends Activity {
 			aboutDialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
 			aboutDialog.setContentView(R.layout.about);
 			aboutDialog.setTitle("About TrustLook");
-			aboutDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,
-					R.drawable.ic_launcher);
+			aboutDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,R.drawable.ic_launcher);
 
-			TextView aboutMainLabel = (TextView) aboutDialog
-					.findViewById(R.id.aboutMainLabel);
+			TextView aboutMainLabel = (TextView) aboutDialog.findViewById(R.id.aboutMainLabel);
 			String mainTemplate = aboutMainLabel.getText().toString();
-			aboutMainLabel.setText(mainTemplate.replace("[Version]",
-					PkgUtils.getAppVersion()));
+			aboutMainLabel.setText(mainTemplate.replace("[Version]", PkgUtils.getAppVersion()));
 
-			TextView aboutDetailLabel = (TextView) aboutDialog
-					.findViewById(R.id.aboutDetailLabel);
-			Button feedbackButton = (Button) aboutDialog
-					.findViewById(R.id.feedbackButton);
+			TextView aboutDetailLabel = (TextView) aboutDialog.findViewById(R.id.aboutDetailLabel);
+			Button feedbackButton = (Button) aboutDialog.findViewById(R.id.feedbackButton);
 			feedbackButton.setTypeface(PkgUtils.getLightFont());
 			feedbackButton.setOnClickListener(new View.OnClickListener() {
 
@@ -395,20 +384,19 @@ public class MainScanActivity extends Activity {
 			return true;
 		case R.id.help:
 			// launch detail activity
-			Intent intent = new Intent(getApplicationContext(),
-					EULAActivity.class);
+			Intent intent = new Intent(getApplicationContext(), EULAActivity.class);
 			startActivity(intent);
 			return (true);
-		case R.id.action_account:
-			Intent fbIntent = new Intent(getApplicationContext(), FBLoginActivity.class);
-			fbIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// Intent fbIntent = new Intent(MainScanActivity.this, FBLoginActivity.class);
-			startActivity(fbIntent);
-			return (true);
-		case R.id.action_settings:
-			Intent fb2Intent = new Intent(getApplicationContext(), HelloFacebookSampleActivity.class);
-			startActivity(fb2Intent);
-			return (true);
+//		case R.id.action_account:
+//			Intent fbIntent = new Intent(getApplicationContext(), FBLoginActivity.class);
+//			fbIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			// Intent fbIntent = new Intent(MainScanActivity.this, FBLoginActivity.class);
+//			startActivity(fbIntent);
+//			return (true);
+//		case R.id.action_settings:
+//			Intent fb2Intent = new Intent(getApplicationContext(), HelloFacebookSampleActivity.class);
+//			startActivity(fb2Intent);
+//			return (true);
 			
 			/*
 			final Dialog fbLoginDialog = new Dialog(this);
@@ -551,40 +539,6 @@ public class MainScanActivity extends Activity {
 				});
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
-	}
-
-	public void parseQueryResult(String queryResult) {
-		try {
-			JSONObject result = new JSONObject(queryResult);
-			JSONArray resultList = result.getJSONArray("results");
-			for (int i = 0; i < resultList.length(); i++) {
-				String md5 = resultList.getJSONObject(i).getString("md5");
-				Double score = resultList.getJSONObject(i).getDouble("score");
-				String virusName = resultList.getJSONObject(i).getString(
-						"virusname");
-				String summary = resultList.getJSONObject(i).getString(
-						"summary");
-				String reportUrl = resultList.getJSONObject(i).getString("url");
-
-				Log.d(TAG, resultList.getJSONObject(i).getString("md5") + " "
-						+ resultList.getJSONObject(i).getDouble("score"));
-
-				for (AppInfo ai : appInfoList) {
-					if (ai.getMd5().equals(md5)) {
-						ai.setScore("" + score);
-						ai.setVirusName(virusName);
-						ai.setReportUrl(reportUrl);
-						ai.setSummary(summary);
-						break;
-					}
-				}
-			}
-
-			// sort based on risk score descending
-			Collections.sort(appInfoList);
-		} catch (JSONException e) {
-			Log.d(TAG, "query - parsing error of \n" + queryResult);
-		}
 	}
 
 	@Override

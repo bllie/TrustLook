@@ -205,7 +205,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					public void onClick(DialogInterface dialog, int id) {
 						Log.d(TAG, "Share button clicked");
 						
-		                performPublish(PendingAction.POST_STATUS_UPDATE);
+						Intent intent = new Intent(Intent.ACTION_SEND);
+						intent.setType("text/plain");
+						intent.putExtra(Intent.EXTRA_SUBJECT, "Android App \"" + selectedApp.getDisplayName() + "\"(" 
+								+ selectedApp.getPackageName() + ") Risk Report");
+						intent.putExtra(Intent.EXTRA_TEXT, "Details at: \n" 
+								+ "http://www.trustlook.com/" + selectedApp.getMd5().toUpperCase()
+								+ "\ntrustlook - next generation mobile security platform");
+						startActivity(Intent.createChooser(intent, "Share with"));
+						
+		                // performPublish(PendingAction.POST_STATUS_UPDATE);
 						
 						Map<String, String> fParams = new HashMap<String, String>();
 						fParams.put("app_name", selectedApp.getPackageName());

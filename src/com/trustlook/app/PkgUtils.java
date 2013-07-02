@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -181,8 +182,7 @@ public class PkgUtils {
 	}
 
 	// ------- network ------
-	public static String queryTrustLook(String deviceId,
-			List<AppInfo> appInfoList) {
+	public static String queryTrustLook(String deviceId, List<AppInfo> appInfoList) {
 		HttpPost request = new HttpPost(Constants.QUERY_URL);
 		request.setHeader("Accept", "application/json");
 		request.setHeader("Content-Type",
@@ -295,19 +295,57 @@ public class PkgUtils {
 
 	private static String post2TrustLook(HttpPost request) {
 		try {
-			HttpResponse httpResponse = new DefaultHttpClient()
-					.execute(request);
+			HttpResponse httpResponse = new DefaultHttpClient().execute(request);
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
 			return retSrc;
 		} catch (Exception e) {
+			// popup network issue.
 			Log.e(TAG, e.toString());
 			e.printStackTrace();
 			return "";
 		}
 	}
 
-	public static Map<String, String> parseAskResult(String askResult,
-			AppListService service) {
+	public static ArrayList<AppInfo> parseQueryResult(ArrayList<AppInfo> appInfoList, String queryResult) {
+		try {
+			JSONObject result = new JSONObject(queryResult);
+			JSONArray resultList = result.getJSONArray("results");
+			for (int i = 0; i < resultList.length(); i++) {
+				try {
+					JSONObject item = resultList.getJSONObject(i);
+					String md5 = item.getString("md5");
+					Double score = item.isNull("score") ? Double.valueOf(0.0) : item.getDouble("score");
+					String virusName = (item.has("virusname")) ? item.getString("virusname") : null;
+					String summary = item.isNull("summary") ? "" : item.getString("summary");
+					String reportUrl = item.getString("url");
+	
+					Log.d(TAG, md5 + " " + score);
+	
+					for (AppInfo ai : appInfoList) {
+						if (ai.getMd5().equals(md5)) {
+							ai.setScore("" + score);
+							ai.setVirusName(virusName);
+							ai.setReportUrl(reportUrl);
+							ai.setSummary(summary);
+							break;
+						}
+					}
+				} catch (JSONException jsonException) {
+					jsonException.printStackTrace();
+				}
+				
+			}
+
+			// sort based on risk score descending
+			Collections.sort(appInfoList);
+		} catch (JSONException e) {
+			Log.d(TAG, "query - parsing error of \n" + queryResult);
+			e.printStackTrace();
+		}
+		return appInfoList;
+	}
+	
+	public static Map<String, String> parseAskResult(String askResult, AppListService service) {
 		Log.d(TAG, "[ask result] " + askResult);
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
@@ -330,18 +368,15 @@ public class PkgUtils {
 
 	public static boolean isWifiConntected() {
 		Context context = TrustApp.getContext();
-		ConnectivityManager connManager = (ConnectivityManager) context
-				.getSystemService(context.CONNECTIVITY_SERVICE);
-		NetworkInfo mWifi = connManager
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		return mWifi.isConnected();
 	}
 
 	public static boolean isCharged() {
 		Context context = TrustApp.getContext();
-		Intent intent = context.registerReceiver(null, new IntentFilter(
-				Intent.ACTION_BATTERY_CHANGED));
+		Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
 		return plugged == BatteryManager.BATTERY_PLUGGED_AC
 				|| plugged == BatteryManager.BATTERY_PLUGGED_USB;
@@ -349,8 +384,7 @@ public class PkgUtils {
 
 	public boolean isNetworkAvailable() {
 		Context context = TrustApp.getContext();
-		ConnectivityManager connectivity = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivity == null) {
 			Log.d(TAG, "getSystemService rend null");
 		} else {
@@ -368,15 +402,13 @@ public class PkgUtils {
 
 	public static String loadDeviceId() {
 		Context context = TrustApp.getContext();
-		SharedPreferences preferences = context.getSharedPreferences(
-				Constants.PREFERENCE_NAME, 0);
+		SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		return preferences.getString(Constants.PREF_KEY_DEVICE_ID, null);
 	}
 
 	public static void persistDeviceId(String deviceId) {
 		Context context = TrustApp.getContext();
-		SharedPreferences preferences = context.getSharedPreferences(
-				Constants.PREFERENCE_NAME, 0);
+		SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(Constants.PREF_KEY_DEVICE_ID, deviceId);
 		editor.commit();
@@ -400,8 +432,7 @@ public class PkgUtils {
 			Log.d(TAG, "generate json error.");
 		}
 
-		SharedPreferences preferences = context.getSharedPreferences(
-				Constants.PREFERENCE_NAME, 0);
+		SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(Constants.PREF_KEY_INTEREST_LIST, arr.toString());
 		Log.d(TAG, "generated json " + arr.toString());
@@ -410,10 +441,8 @@ public class PkgUtils {
 
 	public static Map<String, String> loadInterestMap() {
 		Context context = TrustApp.getContext();
-		SharedPreferences preferences = context.getSharedPreferences(
-				Constants.PREFERENCE_NAME, 0);
-		Map<String, String> resultMap = parsePersistedInterestMap(preferences
-				.getString(Constants.PREF_KEY_INTEREST_LIST, "[]"));
+		SharedPreferences preferences = context.getSharedPreferences(Constants.PREFERENCE_NAME, 0);
+		Map<String, String> resultMap = parsePersistedInterestMap(preferences.getString(Constants.PREF_KEY_INTEREST_LIST, "[]"));
 		Log.d(TAG, "--> loaded interest of " + resultMap.size());
 
 		return resultMap;

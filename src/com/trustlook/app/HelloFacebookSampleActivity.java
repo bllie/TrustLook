@@ -86,14 +86,13 @@ public class HelloFacebookSampleActivity extends FragmentActivity {
             public void onUserInfoFetched(GraphUser user) {
                 HelloFacebookSampleActivity.this.user = user;
                 updateUI();
-                // It's possible that we were waiting for this.user to be populated in order to post a status update.
                 handlePendingAction();
             }
         });
 
         profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
         greeting = (TextView) findViewById(R.id.greeting);
-        greeting.setTypeface(PkgUtils.getLightFont());
+        greeting.setTypeface(PkgUtils.getRegularFont());
 
         postStatusUpdateButton = (Button) findViewById(R.id.postStatusUpdateButton);
         postStatusUpdateButton.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +100,7 @@ public class HelloFacebookSampleActivity extends FragmentActivity {
                 onClickPostStatusUpdate();
             }
         });
+        postStatusUpdateButton.setTypeface(PkgUtils.getRegularFont());
         
         closeButton = (Button) findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +108,7 @@ public class HelloFacebookSampleActivity extends FragmentActivity {
                 onClickClose();
             }
         });        
+        closeButton.setTypeface(PkgUtils.getRegularFont());
 
         controlsContainer = (ViewGroup) findViewById(R.id.main_ui_container);
 
@@ -136,7 +137,6 @@ public class HelloFacebookSampleActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         uiHelper.onResume();
-
         updateUI();
     }
 
