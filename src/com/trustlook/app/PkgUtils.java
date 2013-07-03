@@ -34,7 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -69,8 +71,7 @@ public class PkgUtils {
 			return RISK_LEVEL.LOW;
 	}
 
-	public List<AppInfo> getAllPkgInfo(Context context,
-			PackageManager packageManager) {
+	public List<AppInfo> getAllPkgInfo(Context context, PackageManager packageManager) {
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = packageManager
@@ -80,8 +81,7 @@ public class PkgUtils {
 
 		for (ResolveInfo ri : pkgAppsList) {
 			if (ri.activityInfo != null) {
-				String appDisplayName = ri.activityInfo.loadLabel(
-						packageManager).toString();
+				String appDisplayName = ri.activityInfo.loadLabel(packageManager).toString();
 				String packageName = ri.activityInfo.packageName;
 				AppInfo appInfo = new AppInfo(appDisplayName, packageName);
 				appInfo.setIcon(ri.activityInfo.loadIcon(packageManager));
@@ -185,8 +185,7 @@ public class PkgUtils {
 	public static String queryTrustLook(String deviceId, List<AppInfo> appInfoList) {
 		HttpPost request = new HttpPost(Constants.QUERY_URL);
 		request.setHeader("Accept", "application/json");
-		request.setHeader("Content-Type",
-				"application/x-www-form-urlencoded; charset=UTF-8");
+		request.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 		try {
 			JSONArray jsArray = new JSONArray();
@@ -194,8 +193,6 @@ public class PkgUtils {
 				jsArray.put(appInfo.toJSON());
 			}
 			Log.d(TAG, "Posting to " + Constants.QUERY_URL);
-			// Log.d(TAG, "Posting to " + Constants.QUERY_URL + "\n" +
-			// jsArray.toString());
 
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 			nvps.add(new BasicNameValuePair("devid", deviceId));
@@ -213,8 +210,7 @@ public class PkgUtils {
 		HttpPost request = new HttpPost(Constants.ASK_URL);
 
 		request.setHeader("Accept", "application/json");
-		request.setHeader("Content-Type",
-				"application/x-www-form-urlencoded; charset=UTF-8");
+		request.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 		Log.d(TAG, "Posting to " + Constants.ASK_URL);
 
@@ -237,8 +233,7 @@ public class PkgUtils {
 		HttpPost request = new HttpPost(Constants.ASK_URL);
 
 		request.setHeader("Accept", "application/json");
-		request.setHeader("Content-Type",
-				"application/x-www-form-urlencoded; charset=UTF-8");
+		request.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 		Log.d(TAG, "Posting to " + Constants.ASK_URL);
 
@@ -268,13 +263,11 @@ public class PkgUtils {
 	 * @param apkFile
 	 * @return
 	 */
-	public static String uploadTrustLook(String deviceId, File apkFile,
-			String md5) {
+	public static String uploadTrustLook(String deviceId, File apkFile, String md5) {
 		Log.d(TAG, "[uploadTrustLook] deviceId: " + deviceId + ", md5: " + md5);
 		try {
 			HttpPost post = new HttpPost(Constants.UPLOAD_URL);
-			MultipartEntity reqEntity = new MultipartEntity(
-					HttpMultipartMode.BROWSER_COMPATIBLE);
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 			reqEntity.addPart("devid", new StringBody(deviceId));
 			reqEntity.addPart("md5", new StringBody(md5));
@@ -298,8 +291,8 @@ public class PkgUtils {
 			HttpResponse httpResponse = new DefaultHttpClient().execute(request);
 			String retSrc = EntityUtils.toString(httpResponse.getEntity());
 			return retSrc;
-		} catch (Exception e) {
-			// popup network issue.
+		} 
+		catch (Exception e) {
 			Log.e(TAG, e.toString());
 			e.printStackTrace();
 			return "";
@@ -475,8 +468,7 @@ public class PkgUtils {
 	public static String getAppVersion() {
 		Context context = TrustApp.getContext();
 		try {
-			String versionName = context.getPackageManager().getPackageInfo(
-					context.getPackageName(), 0).versionName;
+			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 			return versionName;
 		} catch (Exception e) {
 			return "0.0.0";

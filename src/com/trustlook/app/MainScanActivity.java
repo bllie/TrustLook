@@ -3,16 +3,10 @@ package com.trustlook.app;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -26,7 +20,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,7 +35,6 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +45,6 @@ import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.trustlook.app.tests.TestActivity;
 
@@ -88,7 +79,6 @@ public class MainScanActivity extends Activity {
 	
     private enum PendingAction {
         NONE,
-        POST_PHOTO,
         POST_STATUS_UPDATE
     }
     private PendingAction pendingAction = PendingAction.NONE;
@@ -99,8 +89,7 @@ public class MainScanActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_scan);
 
-		getActionBar().setBackgroundDrawable(
-				new ColorDrawable(Color.parseColor("#FFFFFF")));
+		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
 
 		service = AppListService.getInstance();
 		service.setInterestMap(PkgUtils.loadInterestMap());
@@ -125,8 +114,7 @@ public class MainScanActivity extends Activity {
 
 		deviceId = preferences.getString(Constants.PREF_KEY_DEVICE_ID, null);
 		if (deviceId == null) {
-			deviceId = Secure.getString(this.getContentResolver(),
-					Secure.ANDROID_ID);
+			deviceId = Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
 			editor.putString("devide_id", deviceId);
 			editor.commit();
 			service.setDeviceId(deviceId);
@@ -137,8 +125,7 @@ public class MainScanActivity extends Activity {
 
 		// setup trigger every 15 seconds
 		Log.d(TAG, "setting up ApkUploadService for device: " + deviceId);
-		Intent apkUploadIntent = new Intent(getApplicationContext(),
-				ApkUploadService.class);
+		Intent apkUploadIntent = new Intent(getApplicationContext(), ApkUploadService.class);
 		apkUploadIntent.putExtra(Constants.DEVICE_ID, deviceId);
 
 		PendingIntent pendingIntent = PendingIntent.getService(
@@ -146,8 +133,7 @@ public class MainScanActivity extends Activity {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(),
-				Constants.CHECK_INTERVAL, pendingIntent);
+		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Constants.CHECK_INTERVAL, pendingIntent);
 
 		if (!isAlreadyLaunched) {
 			launchEULADialog();
@@ -162,18 +148,17 @@ public class MainScanActivity extends Activity {
 		// http://stackoverflow.com/questions/9286822/how-to-force-use-of-overflow-menu-on-devices-with-menu-button
 		try {
 			ViewConfiguration config = ViewConfiguration.get(this);
-			Field menuKeyField = ViewConfiguration.class
-					.getDeclaredField("sHasPermanentMenuKey");
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
 			if (menuKeyField != null) {
 				menuKeyField.setAccessible(true);
 				menuKeyField.setBoolean(config, false);
 			}
-		} catch (Exception ex) {
+		} 
+		catch (Exception ex) {
 			// Ignore
 		}
 
-		isIncludeSystem = Boolean
-				.parseBoolean(getString(R.string.includeSystem));
+		isIncludeSystem = Boolean.parseBoolean(getString(R.string.includeSystem));
 
 		pkgInfoList = getLocalAppsPkgInfo(isIncludeSystem);
 		totalApps = pkgInfoList.size();
@@ -264,10 +249,10 @@ public class MainScanActivity extends Activity {
 				Log.d(TAG, "Scanning " + appInfo.getApkPath());
 
 				appInfoList.add(appInfo);
-
 				publishProgress(appInfo.getApkPath());
 			}
-			return PkgUtils.queryTrustLook(deviceId, appInfoList);
+			 String queryResultStr = PkgUtils.queryTrustLook(deviceId, appInfoList);
+			 return queryResultStr;
 		}
 
 		@Override
@@ -291,14 +276,36 @@ public class MainScanActivity extends Activity {
 			Log.d(TAG, "TrustLook Results: " + results);
 			scanLabel.setText("Checking ...");
 			resultText.setText("");
+			
 			appInfoList = PkgUtils.parseQueryResult((ArrayList<AppInfo>)appInfoList, results);
-
-			// make the 'ask' request
-			new AskTask().execute();
-
-			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-			startActivity(intent);
-			finish();
+			
+			if (results.isEmpty()) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO: popup network issue.
+						AlertDialog.Builder builder = new AlertDialog.Builder(MainScanActivity.this);
+						builder.setTitle("Network Error")
+							.setMessage("Not able to reach trustlook server. Please check your network and try again.")
+							.setCancelable(false)
+							.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+						                //do things
+								}
+							});
+						AlertDialog alert = builder.create();
+						alert.show();
+					}
+				});
+			}
+			else {
+				// make the 'ask' request
+				new AskTask().execute();
+	
+				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				startActivity(intent);
+				finish();
+			}
 		}
 
 		@Override
@@ -347,8 +354,7 @@ public class MainScanActivity extends Activity {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenu.ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		// new MenuInflater(this).inflate(R.menu.context, menu);
 	}
 
@@ -563,16 +569,13 @@ public class MainScanActivity extends Activity {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("message/rfc822");
 		i.putExtra(Intent.EXTRA_EMAIL, new String[] { "support@trustlook.com" });
-		i.putExtra(Intent.EXTRA_SUBJECT,
-				"Feedback for trustlook" + PkgUtils.getAppVersion());
-		i.putExtra(Intent.EXTRA_TEXT, "trustlook " + PkgUtils.getAppVersion()
-				+ "\n");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Feedback for trustlook" + PkgUtils.getAppVersion());
+		i.putExtra(Intent.EXTRA_TEXT, "trustlook " + PkgUtils.getAppVersion() + "\n");
 
 		try {
 			startActivity(Intent.createChooser(i, "Send mail..."));
 		} catch (android.content.ActivityNotFoundException ex) {
-			Toast.makeText(this, "There are no email clients installed.",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

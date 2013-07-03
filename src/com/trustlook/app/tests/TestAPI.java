@@ -73,4 +73,8 @@ public class TestAPI {
 		}
 		return true;
 	}
+	
+	public static boolean parseQuery() {
+		return false;
+	}
 }

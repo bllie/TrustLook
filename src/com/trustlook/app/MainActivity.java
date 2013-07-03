@@ -63,7 +63,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
     private enum PendingAction {
         NONE,
-        POST_PHOTO,
         POST_STATUS_UPDATE
     }
     private UiLifecycleHelper uiHelper;
@@ -263,12 +262,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         // These actions may re-set pendingAction if they are still pending, but we assume they will succeed.
         pendingAction = PendingAction.NONE;
 
-        switch (previouslyPendingAction) {
-            case POST_PHOTO:
-                break;
-            case POST_STATUS_UPDATE:
-                postStatusUpdate();
-                break;
+        if (previouslyPendingAction == PendingAction.POST_STATUS_UPDATE) {
+        	postStatusUpdate();
         }
     }
     

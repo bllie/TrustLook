@@ -11,7 +11,7 @@ public class AppListService {
 	private List<AppInfo> appInfoList = new ArrayList<AppInfo>();
 	private Map<String, String> interestMap = new HashMap<String, String>();
 	private String deviceId = null;
-	private boolean allowApkUpload = false;
+	private boolean allowApkUpload = true;
 	
 	protected AppListService() {
 		// TODO load from preference?
