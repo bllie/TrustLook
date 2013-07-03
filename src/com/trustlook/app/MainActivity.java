@@ -222,13 +222,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 					}
 				});
-		
-//		dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Cancel",
-//				new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int id) {
-//						dialog.cancel();
-//					}
-//				});
 		dialog.show();
 	}
 	
