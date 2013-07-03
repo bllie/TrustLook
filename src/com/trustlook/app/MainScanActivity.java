@@ -40,11 +40,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.FacebookAuthorizationException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
 import com.flurry.android.FlurryAgent;
 import com.trustlook.app.tests.TestActivity;
 
@@ -71,17 +66,9 @@ public class MainScanActivity extends Activity {
 
 	ScanApps scanTask;
 	
-	private GraphUser user;
-
 	List<PackageInfo> pkgInfoList = new ArrayList<PackageInfo>();
 	List<AppInfo> appInfoList = AppListService.getInstance().getAppInfoList();
 	AppListService service = null;
-	
-    private enum PendingAction {
-        NONE,
-        POST_STATUS_UPDATE
-    }
-    private PendingAction pendingAction = PendingAction.NONE;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -399,96 +386,12 @@ public class MainScanActivity extends Activity {
 			Intent intent = new Intent(getApplicationContext(), EULAActivity.class);
 			startActivity(intent);
 			return (true);
-//		case R.id.action_account:
-//			Intent fbIntent = new Intent(getApplicationContext(), FBLoginActivity.class);
-//			fbIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			// Intent fbIntent = new Intent(MainScanActivity.this, FBLoginActivity.class);
-//			startActivity(fbIntent);
-//			return (true);
-//		case R.id.action_settings:
-//			Intent fb2Intent = new Intent(getApplicationContext(), HelloFacebookSampleActivity.class);
-//			startActivity(fb2Intent);
-//			return (true);
-			
-			/*
-			final Dialog fbLoginDialog = new Dialog(this);
-			fbLoginDialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-			fbLoginDialog.setContentView(R.layout.hello_facebook_main);
-			fbLoginDialog.setTitle("Facebook Login");
-			fbLoginDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
-			fbLoginDialog.show();
-			return (true);
-			*/
-			/*
-			final Dialog fbLoginDialog = new Dialog(this);
-			fbLoginDialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-			fbLoginDialog.setContentView(R.layout.fb_login);
-			fbLoginDialog.setTitle("Facebook Login");
-			fbLoginDialog.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
-
-			TextView fbLoginTitle = (TextView)fbLoginDialog.findViewById(R.id.fb_login_title);
-			fbLoginTitle.setTypeface(PkgUtils.getLightFont());
-			
-			LoginButton loginButton = (LoginButton) fbLoginDialog.findViewById(R.id.fb_login_button);
-			Log.d(TAG, "loginButton: " + loginButton);
-			
-	        loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
-	            @Override
-	            public void onUserInfoFetched(GraphUser user) {
-	            	Log.d(TAG, "onUserInfoFetched - user: " + user);
-	            	
-	            	if (user == null) {
-	            		
-	            	}
-	                MainScanActivity.this.user = user;
-	                // updateUI();
-	                // It's possible that we were waiting for this.user to be populated in order to post a
-	                // status update.
-	                handlePendingAction();
-	            }
-	        });
-	        
-			fbLoginDialog.show();
-			return (true);
-			*/
 			
 		}
 
 		return (super.onOptionsItemSelected(item));
 	}
-
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-    	Log.d(TAG, "- MainScanActivity - onSessionStateChange");
-        if (pendingAction != PendingAction.NONE &&
-                (exception instanceof FacebookOperationCanceledException ||
-                exception instanceof FacebookAuthorizationException)) 
-        {
-                new AlertDialog.Builder(MainScanActivity.this)
-                    .setTitle(R.string.cancelled)
-                    .setMessage(R.string.permission_not_granted)
-                    .setPositiveButton(R.string.ok, null)
-                    .show();
-            pendingAction = PendingAction.NONE;
-        } else if (state == SessionState.OPENED_TOKEN_UPDATED) {
-            handlePendingAction();
-        }
-    }
-    
-    @SuppressWarnings("incomplete-switch")
-    private void handlePendingAction() {
-        PendingAction previouslyPendingAction = pendingAction;
-        // These actions may re-set pendingAction if they are still pending, but we assume they
-        // will succeed.
-        pendingAction = PendingAction.NONE;
-
-        switch (previouslyPendingAction) {
-            case POST_STATUS_UPDATE:
-                // postStatusUpdate();
-                Log.d(TAG, "POST_STATUS_UPDATE");
-            	break;
-        }
-    }
-    
+        
 	public List<PackageInfo> getLocalAppsPkgInfo(boolean includeSystem) {
 		Context context = getApplicationContext();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);

@@ -25,20 +25,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.facebook.FacebookAuthorizationException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.FacebookRequestError;
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.android.*;
-import com.facebook.model.GraphObject;
-import com.facebook.model.GraphUser;
 
 import com.flurry.android.FlurryAgent;
 
@@ -55,56 +41,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	List<AppInfo> appInfoList = AppListService.getInstance().getAppInfoList();
 	AppListAdapter adapter = null;
 	AppInfo selectedApp = null;
-    private PendingAction pendingAction = PendingAction.NONE;
 
-    private GraphUser user;
-    private final String PENDING_ACTION_BUNDLE_KEY = "com.trustlook.app:PendingAction";
-	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
-
-    private enum PendingAction {
-        NONE,
-        POST_STATUS_UPDATE
-    }
-    private UiLifecycleHelper uiHelper;
-
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            onSessionStateChange(session, state, exception);
-        }
-    };
-    
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        if (pendingAction != PendingAction.NONE &&
-                (exception instanceof FacebookOperationCanceledException ||
-                exception instanceof FacebookAuthorizationException)) {
-                new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(R.string.cancelled)
-                    .setMessage(R.string.permission_not_granted)
-                    .setPositiveButton(R.string.ok, null)
-                    .show();
-            pendingAction = PendingAction.NONE;
-        } else if (state == SessionState.OPENED_TOKEN_UPDATED) {
-            handlePendingAction();
-        }
-        // updateUI();
-    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-        uiHelper = new UiLifecycleHelper(this, callback);
-        uiHelper.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            String name = savedInstanceState.getString(PENDING_ACTION_BUNDLE_KEY);
-            Log.d(TAG, "pending name: " + name);
-            if (name != null)
-            	pendingAction = PendingAction.valueOf(name);
-        }
-
+	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
 
@@ -199,7 +142,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					}
 				});
 
-		// Facebook Share
+		// Share
 		dialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Share", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						Log.d(TAG, "Share button clicked");
@@ -224,161 +167,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				});
 		dialog.show();
 	}
-	
-    private boolean hasPublishPermission() {
-        Session session = Session.getActiveSession();
-        if (session == null) 
-        	Log.d(TAG, "> Session is null");
-        Log.d(TAG, "permissions: " + session.getPermissions());
-        return session != null && session.getPermissions().contains("publish_actions");
-    }
-    private interface GraphObjectWithId extends GraphObject {
-        String getId();
-    }
-    private void showPublishResult(String message, GraphObject result, FacebookRequestError error) {
-        String title = null;
-        String alertMessage = null;
-        if (error == null) {
-            title = getString(R.string.success);
-            String id = result.cast(GraphObjectWithId.class).getId();
-            alertMessage = getString(R.string.successfully_posted_post, "");
-        } else {
-            title = getString(R.string.error);
-            alertMessage = error.getErrorMessage();
-        }
-        Log.d(TAG, "message: " + message);
-        Toast.makeText(getApplicationContext(), alertMessage, Toast.LENGTH_SHORT).show();
-    }
-    
-    private void handlePendingAction() {
-        PendingAction previouslyPendingAction = pendingAction;
-        // These actions may re-set pendingAction if they are still pending, but we assume they will succeed.
-        pendingAction = PendingAction.NONE;
-
-        if (previouslyPendingAction == PendingAction.POST_STATUS_UPDATE) {
-        	postStatusUpdate();
-        }
-    }
-    
-	private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
-	    for (String string : subset) {
-	        if (!superset.contains(string)) {
-	            return false;
-	        }
-	    }
-	    return true;
-	}
-	
-    private void postStatusUpdate() {
-    	Log.d(TAG, "postStatusUpdate");
-        Bundle postParams = new Bundle();
-        postParams.putString("name", selectedApp.getDisplayName() + " Risk Report");
-        postParams.putString("caption", "- powered by TrustLook Antivirus");
-        postParams.putString("description", "Find the latest threat");
-        postParams.putString("link", "https://www.trustlook.com");
-        postParams.putString("picture", "http://www.trustlook.com/static/img/trustlook-logo3.png");
-        postParams.putString("message", "");
-
-        Session session = Session.getActiveSession();
-        if (session == null) {
-        	Log.d(TAG, "session is null");
-        }
-        List<String> permissions = session.getPermissions();
-        if (!isSubsetOf(PERMISSIONS, permissions)) {
-            // pendingPublishReauthorization = true;
-            Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
-            session.requestNewPublishPermissions(newPermissionsRequest);
-            Log.d(TAG, "requested publish permission");
-        }
-        
-        if (hasPublishPermission()) {
-        	Request.Callback callback= new Request.Callback() {
-	            public void onCompleted(Response response) {
-	            	showPublishResult("success!", response.getGraphObject(), response.getError());
-                }
-	        };
-        	Request request = new Request(Session.getActiveSession(), "me/feed", postParams, 
-                    HttpMethod.POST, callback);
-            Log.d(TAG, "publishing " + postParams.getString("name") + "...");
-            request.executeAsync();
-        } else {
-        	Log.d(TAG, "No publish permission, no op");
-            // pendingAction = PendingAction.POST_STATUS_UPDATE;
-        }
-    }
-    
-    private void performPublish(PendingAction action) {
-        Session session = Session.getActiveSession();
-        if (session != null) {
-        	Log.d(TAG, "1) Session: " + session + ", state: " + session.getState());
-        	if (session.getState() != SessionState.OPENED) {
-        		Session.openActiveSession(this, true, null);
-        	}
-            pendingAction = action;
-            
-            if (session.getState() != SessionState.OPENED) {
-        		// start Facebook Login
-        		Session.openActiveSession(this, true, new Session.StatusCallback() {
-
-        			// callback when session changes state
-        			@Override
-        			public void call(Session session, SessionState state, Exception exception) {
-        				if (session.isOpened()) {
-
-        					// make request to the /me API
-        					Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
-        						// callback after Graph API response with user
-        						// object
-        						@Override
-        						public void onCompleted(GraphUser user, Response response) {
-        							if (user != null) {
-        								Log.d(TAG, "user: " + user.getName());
-        							}
-        						}
-        					});
-        				}
-        			}
-        		});            	
-            }
-            Log.d(TAG, "2) Session: " + session + ", state: " + session.getState());
-            if (hasPublishPermission()) {
-                handlePendingAction();
-            } else {
-            	// handlePendingAction();
-                // We need to get new permissions, then complete the action when we get called back.
-                session.requestNewPublishPermissions(new Session.NewPermissionsRequest(this, PERMISSIONS));
-            }
-        }
-    }
-    /*
-     * callback for the feed dialog which updates the profile status
-     */
-    public class UpdateStatusListener extends BaseDialogListener {
-        @Override
-        public void onComplete(Bundle values) {
-        	Log.d(TAG, "UpdateStatusListener - onComplete");
-            final String postId = values.getString("post_id");
-            if (postId != null) {
-            	Toast.makeText(getApplicationContext(), "Updaet Status executed", Toast.LENGTH_SHORT)
-            	.show();
-            } else {
-            	Toast.makeText(getApplicationContext(), "No wall post made", Toast.LENGTH_SHORT)
-            	.show();
-            }
-        }
-
-        @Override
-        public void onFacebookError(FacebookError error) {
-            Toast.makeText(getApplicationContext(), "Facebook Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel() {
-            Toast.makeText(getApplicationContext(), "Update status cancelled", Toast.LENGTH_SHORT)
-            		.show();
-        }
-    }
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -386,34 +174,4 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		selectedApp = appInfoList.get(position);
 		launchAppOPDialog();
 	}
-	@Override
-	public void onResume() {
-	    super.onResume();
-	    uiHelper.onResume();
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    super.onActivityResult(requestCode, resultCode, data);
-	    uiHelper.onActivityResult(requestCode, resultCode, data);
-	}
-
-	@Override
-	public void onPause() {
-	    super.onPause();
-	    uiHelper.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-	    super.onDestroy();
-	    uiHelper.onDestroy();
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    uiHelper.onSaveInstanceState(outState);
-	}
-
 }
