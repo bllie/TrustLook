@@ -8,6 +8,7 @@ import java.util.Map;
 
 import android.util.Log;
 
+import com.trustlook.app.AppListService;
 import com.trustlook.app.PkgUtils;
 import com.trustlook.app.AppInfo;
 
@@ -74,7 +75,13 @@ public class TestAPI {
 		return true;
 	}
 	
-	public static boolean parseQuery() {
+	public static boolean testParseQuery(ArrayList<AppInfo> appInfoList, String queryResult) {
+		PkgUtils.parseQueryResult(appInfoList, queryResult);
 		return false;
+	}
+	
+	public static boolean testParseAsk(String askResult) {
+		PkgUtils.parseAskResult(askResult, AppListService.getInstance());
+		return true;
 	}
 }

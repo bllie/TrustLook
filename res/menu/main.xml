@@ -13,19 +13,16 @@
     <item
         android:id="@+id/help"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_info_details"
         android:showAsAction="never"
         android:title="Help"/>
     <item
         android:id="@+id/about_drapp"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_info_details"
         android:showAsAction="never"
         android:title="About"/>
     <item
         android:id="@+id/unit_test"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_info_details"
         android:showAsAction="never"
         android:title="Test"/>
 </menu>

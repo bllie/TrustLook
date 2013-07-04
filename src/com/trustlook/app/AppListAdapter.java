@@ -102,7 +102,7 @@ public class AppListAdapter extends ArrayAdapter<AppInfo> {
 		if (icon != null)
 			imageView.setImageDrawable(objects.get(position).getIcon());
 		else
-			imageView.setImageResource(R.drawable.windowsmobile_logo);
+			imageView.setImageResource(R.drawable.amplifier_3d);
 
 		return rowView;
 	}

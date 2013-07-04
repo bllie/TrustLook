@@ -27,5 +27,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="testSort" />
-
+    <Button
+        android:id="@+id/testParseQueryButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="testParseQuery" />
+    <Button
+        android:id="@+id/testParseAskButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="testParseAsk" />    
 </LinearLayout>

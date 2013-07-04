@@ -14,8 +14,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:contentDescription="@string/app_logo"
-        android:src="@drawable/windowsmobile_logo" >
+        android:contentDescription="@string/app_logo">
     </ImageView>
 
     <!-- middle android:layout_width="180dp" -->

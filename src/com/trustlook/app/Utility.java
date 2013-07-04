@@ -27,8 +27,6 @@ import android.net.http.AndroidHttpClient;
 import android.provider.MediaStore;
 import org.json.JSONObject;
 
-import com.facebook.android.AsyncFacebookRunner;
-import com.facebook.android.Facebook;
 
 import java.io.*;
 import java.net.URL;
@@ -38,9 +36,7 @@ import java.util.Hashtable;
 @SuppressWarnings("deprecation")
 public class Utility extends Application {
 
-    public static Facebook mFacebook;
 
-    public static AsyncFacebookRunner mAsyncRunner;
     public static JSONObject mFriendsList;
     public static String userUID = null;
     public static String objectID = null;

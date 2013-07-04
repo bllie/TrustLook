@@ -1,10 +1,12 @@
 package com.trustlook.app;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -17,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -342,7 +345,14 @@ public class PkgUtils {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
 			JSONObject result = new JSONObject(askResult);
+			
+			// server has no interest to your apk uploading			
+			if (!result.has("results")) {
+				Log.d(TAG, "server has no interest in your apks");
+				return resultMap;
+			}
 			JSONArray interestList = result.getJSONArray("results");
+			
 			for (int i = 0; i < interestList.length(); i++) {
 				// Log.d(TAG, "ASK result: " + interestList.getString(i));
 				// TODO
@@ -353,6 +363,7 @@ public class PkgUtils {
 			}
 			Log.d(TAG, "Total interest apps: " + interestList.length());
 		} catch (JSONException e) {
+			e.printStackTrace();
 			Log.d(TAG, "[ask] - parsing error of: " + askResult);
 		}
 		return resultMap;

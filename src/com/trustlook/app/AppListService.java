@@ -62,7 +62,8 @@ public class AppListService {
 	}
 
 	public String getApkPathByMd5(String md5) {
-		return getAppInfoByMd5(md5).getApkPath();
+		AppInfo appInfo = getAppInfoByMd5(md5);
+		return (appInfo != null) ? appInfo.getApkPath() : null;
 	}
 
 	public void remove(AppInfo appInfo) {
