@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:textColor="#00BFFF"
+            android:textColor="#FFFFFF"
             android:textSize="40sp" />
     </RelativeLayout>
 

@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="ring" android:innerRadiusRatio="3.0" android:thicknessRatio="11.0"
-    android:useLevel="false">
-    <size android:width="48dip" android:height="48dip"/>
-    <solid android:color="#DDA078" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--  source: http://stackoverflow.com/questions/12776587/android-circular-determinate-progressbar -->
+    
+    <item android:id="@android:id/background">
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:innerRadiusRatio="3.2"
+            android:shape="ring"
+            android:thicknessRatio="5.3"
+            android:useLevel="false" >
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    
+    <item android:id="@android:id/progress">
+        <shape
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:innerRadiusRatio="3.4"
+            android:shape="ring"
+            android:thicknessRatio="6.0"
+            android:useLevel="false" >
+            <size
+                android:height="48dp"
+                android:width="48dp" />
+
+            <solid android:color="#DDDDDD" />
+        </shape>
+    </item>
+</layer-list>
